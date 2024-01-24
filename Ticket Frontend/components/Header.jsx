@@ -3,27 +3,24 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/joy/Drawer';
-import Input from '@mui/joy/Input';
 import List from '@mui/joy/List';
 import ListItemButton from '@mui/joy/ListItemButton';
-import Typography from '@mui/joy/Typography';
 import ModalClose from '@mui/joy/ModalClose';
 import Divider from '@mui/material/Divider';
 import AccordionGroup from '@mui/joy/AccordionGroup';
 import Accordion from '@mui/joy/Accordion';
 import AccordionDetails from '@mui/joy/AccordionDetails';
 import AccordionSummary from '@mui/joy/AccordionSummary';
+import ListItem from '@mui/joy/ListItem';
+import Menu from '@mui/joy/Menu';
+import MenuButton from '@mui/joy/MenuButton';
+import MenuItem from '@mui/joy/MenuItem';
+import Dropdown from '@mui/joy/Dropdown';
 import { Pages } from './Navpage';
 import Login from './Login';
-const pages = ['Products', 'Pricing', 'Blog'];
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
@@ -98,16 +95,21 @@ export default function Header() {
           </AccordionGroup>
         </List>
       </Drawer>
-          <Box className='ms-5' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 3, color: 'black', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Box className='ms-3' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              <List sx={{flexDirection:'row'}}>
+                {Pages.map((page)=>(
+                      <ListItem key={page}> 
+                         <Dropdown>
+                            <MenuButton variant="plain" size="sm" sx={{'&:hover': { backgroundColor: 'transparent !important' ,color :'#3399ff' }}}>{page.title}</MenuButton>
+                            <Menu sx={{boxShadow : 'none'}} size="sm">
+                              {page.pages && page.pages.map((subPage)=>(
+                              <MenuItem sx={{'&:hover': { backgroundColor: 'transparent !important' ,color :'#3399ff'}}} key={subPage.title}>{subPage.title}</MenuItem>
+                              ))}
+                            </Menu>
+                          </Dropdown>
+                      </ListItem>
+                ))}
+              </List>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 , flexGrow: 1,}}>
                 <img src="../src/assets/Tickpick_black_flat.png" alt="Tickpick_black_flat" 
