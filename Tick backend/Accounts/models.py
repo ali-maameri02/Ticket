@@ -18,8 +18,10 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        return self.create_user(email, password, **extra_fields)
+        # Remove 'username' from extra_fields to avoid duplication
+        extra_fields.pop('username', None)
 
+        return self.create_user(email, password, **extra_fields)
     def get_username_from_email(self, email):
         # Extract username from email (before @)
         username = email.split('@')[0]
