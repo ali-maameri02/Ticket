@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from Events.models import *
+from Accounts.models import *
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +16,23 @@ class TheaterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theater
         fields = ['id', 'name', 'address', 'cover']
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+
+class TicketSerilizer(serializers.ModelSerializer):
+    
+    class Meta :
+        model = Ticket
+        fields = "__all__"
+        
+class TicketupdateSerilizer(serializers.ModelSerializer):
+    
+    class Meta :
+        model = Ticket
+        # fields = "__all__"
+        exclude = ["document"]
