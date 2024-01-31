@@ -18,9 +18,13 @@ urlpatterns = [
     
     # Your other URL patterns
     path('event/', EventListCreateView.as_view(), name='event-list-create'),
+    path('users/', UserslistView.as_view(), name='users-list-create'),
+    path('user/<int:pk>/', UserRetreivedestroyView.as_view(), name='users-list-create'),
     path('event/<int:pk>/', EventRetrieveUpdateDestroyView.as_view(), name='event-retrieve-update-destroy'),
     path('stadiums/', StadiumListView.as_view(), name='stadium-list-create'),
     path('stadiums/<int:pk>/', StadiumRetrieveDestroyView.as_view(), name='stadium-retrieve-destroy'),
     path('theaters/', TheaterListView.as_view(), name='theater-list-create'),
     path('theaters/<int:pk>/', TheaterRetrieveDestroyView.as_view(), name='theater-retrieve-destroy'),
+    path('Ticket/<int:pk>/', TicketUpdateView.as_view(), name='ticket-retrieve-destroy'),
+    path('Tickets/', TciketListview.as_view(), name='tickets'),
 ]
