@@ -9,6 +9,11 @@
     /* background-color: transparent !important; */
 }
 
+.logo {
+    width: 8rem;
+    min-width: 5rem;
+}
+
 .header .logo {
     width: 10rem;
     min-width: 5rem;
