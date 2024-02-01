@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('Accounts.urls')),  # Replace 'your_app' with the name of your app
     path('api/admin/', include('Admin.urls')),  # Replace 'your_app' with the name of your app
+    path('api/seller/', include('Seller.urls')),  # Replace 'your_app' with the name of your app
 ]
