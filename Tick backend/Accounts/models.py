@@ -8,7 +8,8 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        username = self.get_username_from_email(email)
+        user = self.model(email=email, username=username, **extra_fields)
         if password:
             user.password = make_password(password)  # Hash the password
         user.save(using=self._db)
@@ -24,7 +25,10 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
-
+    def get_username_from_email(self, email):
+        # Extract username from email (before @)
+        username = email.split('@')[0]
+        return username
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, unique=True, blank=True, null=True)

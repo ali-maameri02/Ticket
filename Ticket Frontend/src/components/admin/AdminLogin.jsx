@@ -10,13 +10,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../Logo';
-
+import axios from 'axios';  // Import Axios library for making HTTP requests
 function Copyright(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="/">
-          Your Website
+          FUNPASS
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}
@@ -26,14 +26,25 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 export default function AdminLogin() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
-      };
+  const handleSubmit = async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      try {
+          const response = await axios.post('http://127.0.0.1:8000/api/admin/Login/', {  // Adjust the URL as per your Django URL configuration
+              username: email,
+              password: password
+          });
+          
+          console.log(response.data);  // Log the response for debugging
+          // Handle successful login here, e.g., store the token in localStorage
+      } catch (error) {
+          console.error('Login failed:', error.response.data);  // Log the error response
+          // Handle login failure, e.g., display error message to the user
+      }
+  };
     
   return (
     <>
