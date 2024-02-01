@@ -27,4 +27,6 @@ urlpatterns = [
     path('theaters/<int:pk>/', TheaterRetrieveDestroyView.as_view(), name='theater-retrieve-destroy'),
     path('Ticket/<int:pk>/', TicketUpdateView.as_view(), name='ticket-retrieve-destroy'),
     path('Tickets/', TciketListview.as_view(), name='tickets'),
+    path('Tickets/', TciketListview.as_view(), name='tickets'),
+    path('Login/', AdminLoginView.as_view(), name='Login'),
 ]
