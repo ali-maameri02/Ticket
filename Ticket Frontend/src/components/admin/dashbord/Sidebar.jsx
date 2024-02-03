@@ -29,9 +29,14 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
+import PaymentIcon from '@mui/icons-material/Payment';
 import ColorSchemeToggle from './ColorSchemeToggle';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import EventIcon from '@mui/icons-material/Event';
 import { closeSidebar } from './utils';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import {  useNavigate  } from 'react-router-dom';
 
 function Toggler({
   defaultExpanded = false,
@@ -59,6 +64,13 @@ function Toggler({
 }
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+  const authToken = localStorage.getItem('authToken');
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('sessionExpiration');
+    navigate('/admin');
+  };
   return (
     <Sheet
       className="Sidebar"
@@ -139,17 +151,14 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
+         
           <ListItem>
-            <ListItemButton>
-              <HomeRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton>
+            <ListItemButton
+             role="menuitem"
+             component={Link}
+             to="/admin/dashboard/"
+             selected={location.pathname === '/admin/dashboard/'}>
+             
               <DashboardRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Dashboard</Typography>
@@ -160,12 +169,13 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton
               role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/order-dashboard/"
+              component={Link}
+              to="payments/"
+              selected={location.pathname === '/admin/dashboard/payments/'}
             >
-              <ShoppingCartRoundedIcon />
+              <PaymentIcon />
               <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
+                <Typography level="title-sm">Payments</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -173,9 +183,9 @@ export default function Sidebar() {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <AssignmentRoundedIcon />
+                  <ConfirmationNumberIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                    <Typography level="title-sm">Tickets</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -185,33 +195,50 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>All tasks</ListItemButton>
+                  <ListItemButton 
+                  role="menuitem"
+                  component={Link}
+                  to="all-tickets/"
+                  selected={location.pathname === '/admin/dashboard/all-tickets/'}
+                  >All tickets</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Backlog</ListItemButton>
+                  <ListItemButton
+                  role="menuitem"
+                  component={Link}
+                  to="blocking-tickets/"
+                  selected={location.pathname === '/admin/dashboard/blocking-tickets/'}
+                  >Blocking</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>In progress</ListItemButton>
+                  <ListItemButton
+                  role="menuitem"
+                  component={Link}
+                  to="progress-tickets/"
+                  selected={location.pathname === '/admin/dashboard/progress-tickets/'}
+                  >In progress</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Done</ListItemButton>
+                  <ListItemButton
+                  role="menuitem"
+                  component={Link}
+                  to="done-tickets/"
+                  selected={location.pathname === '/admin/dashboard/done-tickets/'}>Done</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
           </ListItem>
           <ListItem>
             <ListItemButton
-              role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/messages/"
+             role="menuitem"
+             component={Link}
+             to="events/"
+             selected={location.pathname === '/admin/dashboard/events/'}
             >
-              <QuestionAnswerRoundedIcon />
+              <EventIcon />
               <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
+                <Typography level="title-sm">Events</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip>
             </ListItemButton>
           </ListItem>
           <ListItem nested>
@@ -231,62 +258,35 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton selected>My profile</ListItemButton>
+                  <ListItemButton 
+                  role="menuitem"
+                  component={Link}
+                  to="my-profile/"
+                  selected={location.pathname === '/admin/dashboard/my-profile/'}
+                  >My profile</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
+                  <ListItemButton
+                  role="menuitem"
+                  component={Link}
+                  to="users"
+                  selected={location.pathname === '/admin/dashboard/users/'}
+                  >Users</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
           </ListItem>
-        </List>
-        <List
-          size="sm"
-          sx={{
-            mt: 'auto',
-            flexGrow: 0,
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-            '--List-gap': '8px',
-            mb: 2,
-          }}
-        >
           <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
+            <ListItemButton
+            role="menuitem"
+            component={Link}
+            to="settings"
+            selected={location.pathname === '/admin/dashboard/settings/'}>
               <SettingsRoundedIcon />
               Settings
             </ListItemButton>
           </ListItem>
         </List>
-        <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography level="title-sm">Used space</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card>
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
@@ -299,7 +299,7 @@ export default function Sidebar() {
           <Typography level="title-sm">Siriwat K.</Typography>
           <Typography level="body-xs">siriwatk@test.com</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
+        <IconButton size="sm" variant="plain" color="neutral" onClick={handleLogout}>
           <LogoutRoundedIcon />
         </IconButton>
       </Box>

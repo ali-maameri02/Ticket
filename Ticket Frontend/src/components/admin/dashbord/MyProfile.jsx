@@ -92,7 +92,7 @@ export default function MyProfile() {
         sx={{
           display: 'flex',
           maxWidth: '800px',
-          mx: 'auto',
+          // mx: 'auto',
           px: { xs: 2, md: 6 },
           py: { xs: 2, md: 3 },
         }}
