@@ -3,6 +3,7 @@ import App from './App.jsx'
 import * as ReactDOM from "react-dom/client";
 import ErrorPage from './ErrorPage.jsx'
 import Admin from './components/admin/Admin'
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -14,9 +15,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "admin",
+    path: "admin/*",
     element: <Admin />,
-  },
+},
+
+ 
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
