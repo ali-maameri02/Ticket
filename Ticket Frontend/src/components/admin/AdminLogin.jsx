@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../Logo';
 import axios from 'axios';  // Import Axios library for making HTTP requests
+import { redirect } from 'react-router-dom';
 function Copyright(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -25,7 +26,7 @@ function Copyright(props) {
   }
 
 const defaultTheme = createTheme();
-export default function AdminLogin() {
+export default function AdminLogin(props) {
   const handleSubmit = async (event) => {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
@@ -36,13 +37,27 @@ export default function AdminLogin() {
           const response = await axios.post('http://127.0.0.1:8000/api/admin/Login/', {  // Adjust the URL as per your Django URL configuration
               username: email,
               password: password
+              
           });
-          
           console.log(response.data);  // Log the response for debugging
-          // Handle successful login here, e.g., store the token in localStorage
+          const token = response.data.token;
+          localStorage.setItem('authToken', token);
+          props.onLogin();
+          
       } catch (error) {
-          console.error('Login failed:', error.response.data);  // Log the error response
-          // Handle login failure, e.g., display error message to the user
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error('Login failed:', error.response.data);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error('No response received from the server');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error during request setup:', error.message);
+        }
+    
+        // Handle login failure, e.g., display error message to the user
       }
   };
     
