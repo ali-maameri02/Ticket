@@ -37,24 +37,26 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Avatar from '@mui/joy/Avatar';
 import ReactApexChart from 'react-apexcharts';
 import TimeAgo from '../utils/TimeAgo'
-
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 
 export default function Home() {
-  const categories = [
-    "2024-01-01T00:00:00.000Z",
-    "2024-02-01T00:00:00.000Z",
-    "2024-03-01T00:00:00.000Z",
-    "2024-04-01T00:00:00.000Z",
-    "2024-05-01T00:00:00.000Z",
-    "2024-06-01T00:00:00.000Z",
-    "2024-07-01T00:00:00.000Z",
-    "2024-08-01T00:00:00.000Z",
-    "2024-09-01T00:00:00.000Z",
-    "2024-10-01T00:00:00.000Z",
-    "2024-11-01T00:00:00.000Z",
-    "2024-12-01T00:00:00.000Z",
-  ];
-  const [apexOptions, setApexOptions] = React.useState({
+  const [statistics, setStatistics] = useState(null);
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/admin/calculate-statistics/');
+        setStatistics(response.data);
+        // console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching statistics:', error);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
+  const [apexOptions, setApexOptions] = useState({
     chart: {
       height: 350,
       type: 'area'
@@ -67,69 +69,108 @@ export default function Home() {
     },
     xaxis: {
       type: 'datetime',
-      categories: categories
+      categories: []
     },
     tooltip: {
       x: {
         format: 'dd/MM/yy HH:mm'
-      },
-    },
-  });
-
-  const [apexSeries, setApexSeries] = React.useState([
-    {
-      name: 'Sales',
-      data: [150, 200, 120, 180, 160, 220, 200 ,234 ,243,223,342,754,353]
-    },
-    {
-      name: 'Users',
-      data: [80, 150, 200, 150, 120, 180, 140, 200, 150, 120,342,543,353]
-    }
-  ]);
-   
-  
-    const chartData = {
-      series: [20,40,40],
-      options: {
-        chart: {
-          width: '100%',
-          type: 'pie',
-        },
-        labels: ["Blocking", "In Progress", "Done"],
-        theme: {
-          monochrome: {
-            enabled: true
-          }
-        },
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              offset: -5
-            }
-          }
-        },
-        
-        dataLabels: {
-          formatter(val, opts) {
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            return [name, val.toFixed(1) + '%']
-          }
-        },
-        legend: {
-          show: false
-        }
-      },
-    
-    
-    };
-    const getRandomColor = () => {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
       }
-      return color;
-    };
+    }
+  });
+  
+  const [apexSeries, setApexSeries] = useState([
+    { name: 'Sales', data: [] },
+    { name: 'Users', data: [] }
+  ]);
+  
+  useEffect(() => {
+    fetchSalesAndUsersData();
+  }, []);
+  
+  const fetchSalesAndUsersData = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/admin/sales_and_users_data/');
+      if (response.ok) {
+        const data = await response.json();
+        const { salesData, usersData } = data;
+  
+        // Extract categories from the keys of salesData
+        const categories = Object.keys(salesData);
+  
+        const salesSeries = Object.values(salesData);
+        const usersSeries = Object.values(usersData);
+  
+        setApexOptions(prevOptions => ({
+          ...prevOptions,
+          xaxis: {
+            ...prevOptions.xaxis,
+            categories: categories
+          }
+        }));
+  
+        setApexSeries([
+          { name: 'Sales', data: salesSeries },
+          { name: 'Users', data: usersSeries }
+        ]);
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
+  // Check if categories are available before rendering the chart
+  const isChartReady = apexOptions.xaxis.categories.length > 0;
+  
+  const [chartData, setChartData] = useState(null);
+
+    useEffect(() => {
+        const fetchTicketStatistics = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/api/admin/ticket_statistics/');
+                console.log(response.data)
+                const pieData = {
+                    series: Object.values(response.data),
+                    options: {
+                        chart: {
+                            width: '100%',
+                            type: 'pie',
+                        },
+                        labels: Object.keys(response.data),
+                        theme: {
+                            monochrome: {
+                                enabled: true,
+                            },
+                        },
+                        plotOptions: {
+                            pie: {
+                                dataLabels: {
+                                    offset: -5,
+                                },
+                            },
+                        },
+                        dataLabels: {
+                            formatter(val, opts) {
+                                const name =
+                                    opts.w.globals.labels[opts.seriesIndex];
+                                return [name, val.toFixed(1) + '%'];
+                            },
+                        },
+                        legend: {
+                            show: false,
+                        },
+                    },
+                };
+                setChartData(pieData);
+            } catch (error) {
+                console.error('Error fetching ticket statistics:', error);
+            }
+        };
+
+        fetchTicketStatistics();
+    }, []);
+
 
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
@@ -184,7 +225,7 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-          12.3M
+        {statistics ? statistics.total_sales : 'Loading...'}
         </Typography>
         <Typography level="body-sm">Total Sales</Typography>
       </CardContent>
@@ -205,8 +246,8 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-          12.3M
-        </Typography>
+        {statistics ? statistics.total_orders : 'Loading...'}
+                </Typography>
         <Typography level="body-sm">Total Order</Typography>
       </CardContent>
       
@@ -226,8 +267,8 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-          12.3M
-        </Typography>
+        {statistics ? statistics.total_users : 'Loading...'}
+                </Typography>
         <Typography level="body-sm">Total Users</Typography>
       </CardContent>
       
@@ -247,7 +288,7 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-          12.3M
+        {statistics ? statistics.total_tickets : 'Loading...'}
         </Typography>
         <Typography level="body-sm">Total Tickets</Typography>
       </CardContent>
@@ -261,7 +302,11 @@ export default function Home() {
           Website Users
         </Typography>
       </CardContent>
-      <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={300} />
+      {isChartReady ? (
+      <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={350} />
+    ) : (
+      <p>Loading chart...</p>
+    )}
       </Card>
       </Grid>
       <Grid xs={12} md={6} lg={4}>
@@ -271,7 +316,13 @@ export default function Home() {
           Tickets Status
         </Typography>
       </CardContent>
-        <ReactApexChart options={chartData.options} series={chartData.series} type="pie"   />
+      {chartData && (
+                <ReactApexChart
+                    options={chartData.options}
+                    series={chartData.series}
+                    type="pie"
+                />
+            )}
         </Card>
       </Grid>
       <Grid xs={12} md={12} lg={12}>

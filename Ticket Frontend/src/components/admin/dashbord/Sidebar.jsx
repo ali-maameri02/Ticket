@@ -130,8 +130,10 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-       
-        <Typography level="title-lg">Acme Co.</Typography>
+        <IconButton variant="soft" color="primary" size="sm">
+          <BrightnessAutoRoundedIcon />
+        </IconButton>
+        <Typography level="title-lg">Funpass.</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
         <Dropdown>
         <MenuButton
