@@ -32,7 +32,12 @@ export default function Dashboard() {
           component="main"
           className="MainContent"
           sx={{
-            pt: { xs: 'calc(12px + var(--Header-height))', md: 3 },
+            px: { xs: 2, md: 6 },
+            pt: {
+              xs: 'calc(12px + var(--Header-height))',
+              sm: 'calc(12px + var(--Header-height))',
+              md: 3,
+            },
             pb: { xs: 2, sm: 2, md: 3 },
             flex: 1,
             display: 'flex',
@@ -40,7 +45,7 @@ export default function Dashboard() {
             minWidth: 0,
             height: '100dvh',
             gap: 1,
-            overflow: 'auto',
+            overflow:'auto'
           }}
         >
           

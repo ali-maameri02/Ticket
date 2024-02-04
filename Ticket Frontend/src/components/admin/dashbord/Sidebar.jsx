@@ -37,6 +37,12 @@ import { closeSidebar } from './utils';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {  useNavigate  } from 'react-router-dom';
+import ReactCountryFlag from "react-country-flag"
+import Dropdown from '@mui/joy/Dropdown';
+import Menu from '@mui/joy/Menu';
+import MenuButton from '@mui/joy/MenuButton';
+import MenuItem from '@mui/joy/MenuItem';
+import MoreVert from '@mui/icons-material/MoreVert';
 
 function Toggler({
   defaultExpanded = false,
@@ -124,11 +130,47 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
+       
         <Typography level="title-lg">Acme Co.</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
+        <Dropdown>
+        <MenuButton
+        slots={{ root: IconButton }}
+        slotProps={{ root: { variant: 'outlined' } }}
+        sx={{minWidth:'2rem',minHeight:"2rem"}}
+      >
+        <ReactCountryFlag
+                countryCode="US"
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title="US" 
+               />
+        </MenuButton>
+        <Menu sx={{ zIndex: 10001, backgroundColor: 'var(--joy-palette-background-surface)',}} >
+        <MenuItem >
+          <ReactCountryFlag
+                countryCode="US"
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title="US" 
+               />
+               English
+        </MenuItem>
+        <MenuItem>
+        <ReactCountryFlag
+                countryCode="SA"
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title="US" 
+               />
+               Arabic
+        </MenuItem>
+        </Menu>
+        </Dropdown>
+        
       </Box>
       <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
       <Box
