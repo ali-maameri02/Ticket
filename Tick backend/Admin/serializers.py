@@ -29,7 +29,11 @@ class TicketSerilizer(serializers.ModelSerializer):
     class Meta :
         model = Ticket
         fields = "__all__"
-        
+class TicketRefusedSerilizer(serializers.ModelSerializer):
+    
+    class Meta :
+        model = TicketRefused
+        fields = "__all__" 
 class TicketupdateSerilizer(serializers.ModelSerializer):
     
     class Meta :
