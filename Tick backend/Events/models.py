@@ -38,14 +38,29 @@ class Ticket(models.Model):
     def __str__(self):
         return f'Ticket of {self.event.title} event added by {self.seller.username}'
 class Payment(models.Model):
-    method = models.CharField(max_length=255)
+    method =  models.CharField(choices=[('Paypal', 'Paypal'), ('Mada', 'Mada')], max_length=50,default=None,blank=True)
     date = models.DateTimeField()
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    Amount = models.IntegerField(default=None)
+
 
 class Order(models.Model):
     seller = models.ForeignKey(CustomUser, related_name='orders', on_delete=models.CASCADE)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(null=True)  # New field for quantity
     date_ordered = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(choices=[('In progress', 'In progress'), ('Confirmed', 'Confirmed')], max_length=50, default='In progress', blank=True)
 
+    # def save(self, *args, **kwargs):
+    #     # Calculate total_price before saving the order
+    #     self.total_price = self.quantity * self.ticket.price
+    #     super().save(*args, **kwargs)
 
+    # @property
+    # def total_price(self):
+    #     return getattr(self, '_total_price', None)
+
+    # @total_price.setter
+    # def total_price(self, value):
+    #     self._total_price = value

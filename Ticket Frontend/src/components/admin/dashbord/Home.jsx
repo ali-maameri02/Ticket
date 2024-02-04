@@ -335,6 +335,18 @@ export default function Home() {
           </ListItemContent>
         </ListItem>
       </List>
+      <Typography level="body-xs" 
+       fontSize={12} textAlign="right" 
+      component={Link}
+       href="all-tickets/"
+       sx={{
+        '&:hover': {
+          textDecorationLine: 'none',
+        },
+      }}
+                  >
+           View All
+      </Typography>
         </Card>
       </Grid>
       
