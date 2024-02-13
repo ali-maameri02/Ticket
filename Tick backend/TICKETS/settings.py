@@ -141,3 +141,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "Accounts.CustomUser"
+MADA_CARD_APP_ID = '1704948301519'
+MADA_CARD_API_SECRET_KEY = 'b3d4888a-9cfc-3e4a-8c8f-2038ad6fb89a'

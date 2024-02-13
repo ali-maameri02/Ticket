@@ -63,23 +63,17 @@ class TicketUpdateView(generics.RetrieveUpdateAPIView):
         instance = serializer.instance
         if 'status' in serializer.validated_data:
             status_value = serializer.validated_data['status']
-            if status_value == 'Refused':
-                # Create TicketRefused instance
-                TicketRefused.objects.create(
-                    seller=instance.seller,  # Use the correct foreign key field name
-                    event=instance.event,
-                    quantity=instance.quantity,
-                    sold=instance.sold,
-                    Row=instance.Row,
-                    Section=instance.Section,
-                    buyer=instance.buyer,
-                    document=instance.document,
-                    price=instance.price,
-                )
-                # Delete the ticket
-                instance.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+            if status_value == 'Refused' or status_value == 'Accepted':
+                # Create notification for the seller
+                message = f"Your ticket for {instance.event.title} has been {status_value.lower()}."
+                notification =Notifications.objects.create(Receiver=instance.seller, message=message)
+                notification.save()
+                # Assuming you want to proceed with the update
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        # If the status is not 'Refused' or 'Accepted', proceed with the update
         serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 class TciketListview(generics.ListAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerilizer

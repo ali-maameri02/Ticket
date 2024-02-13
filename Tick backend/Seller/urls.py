@@ -6,6 +6,7 @@ router = DefaultRouter()
 urlpatterns = [
     path('', SellTicketView.as_view(), name='Sell_ticket'),
     path('Orders/', Manageorders.as_view(), name='Sell_ticket'),
+    
     path('updateorder/<int:pk>/', Updateorderstatus.as_view(), name='updateorder'),
          path('Notifications/', CheckNotificationsView.as_view(), name='Notifications'),
 ]
