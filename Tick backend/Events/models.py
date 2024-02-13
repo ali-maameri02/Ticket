@@ -27,11 +27,11 @@ class Ticket(models.Model):
     seller = models.ForeignKey(CustomUser, related_name='tickets_for_sale', on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    status = models.CharField(choices=[('Refused', 'Refused'), ('Accepted', 'Accepted')], max_length=10,default=None,blank=True)
+    status = models.CharField(choices=[('Refused', 'Refused'), ('Accepted', 'Accepted')], max_length=10,default="Progress",blank=True)
     sold = models.BooleanField(default=False)
     Row = models.CharField(max_length=50, blank=True, null=True)
     Section = models.CharField(max_length=50, blank=True, null=True)
-    buyer = models.ForeignKey(CustomUser, related_name='bought_tickets', null=True, blank=True, on_delete=models.SET_NULL)
+    
     document = models.FileField(upload_to='ticket_documents/')
     price = models.IntegerField(default=None, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -46,7 +46,6 @@ class TicketRefused(models.Model):
     sold = models.BooleanField(default=False)
     Row = models.CharField(max_length=50, blank=True, null=True)
     Section = models.CharField(max_length=50, blank=True, null=True)
-    buyer = models.ForeignKey(CustomUser, related_name='refused_bought_tickets', null=True, blank=True, on_delete=models.SET_NULL)
     document = models.FileField(upload_to='ticket_documents/',null=True,blank=True)
     price = models.IntegerField(default=None, null=True)
     date_refused = models.DateTimeField(auto_now_add=True)
@@ -68,7 +67,7 @@ class Order(models.Model):
     quantity = models.PositiveIntegerField(null=True)  # New field for quantity
     date_ordered = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=[('In progress', 'In progress'), ('Confirmed', 'Confirmed')], max_length=50, default='In progress', blank=True)
-
+    buyer = models.ForeignKey(CustomUser, related_name='bought_tickets', null=True, blank=True, on_delete=models.SET_NULL)
     # def save(self, *args, **kwargs):
     #     # Calculate total_price before saving the order
     #     self.total_price = self.quantity * self.ticket.price

@@ -19,3 +19,9 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifications
         fields = '__all__'
+
+
+class Creditcardserializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreditCard
+        fields = '__all__'

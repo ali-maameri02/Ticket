@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/joy/Avatar";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -23,7 +24,7 @@ import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import { jsPDF } from 'jspdf';
-
+import axios from "axios";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -45,199 +46,7 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const tickets = [
-  {
-    id: "1",
-    event_id: "101",
-    quantity: "2",
-    status: "Accepted",
-    sold: "true",
-    Row: "A",
-    Section: "Front",
-    buyer_id: "201",
-    document: "ticket1.pdf",
-    price: "50",
-    date_added: "2024-01-01T08:00:00Z",
-    seller: {
-      initial: "S",
-      name: "Sarah Johnson",
-      email: "sarah@example.com"
-    },
-    buyer: {
-      initial: "M",
-      name: "Michael Smith",
-      email: "michael@example.com"
-    }
-  },
-  {
-    id: "2",
-    event_id: "102",
-    quantity: "1",
-    status: "Progress",
-    sold: "true",
-    Row: "B",
-    Section: "Balcony",
-    buyer_id: "202",
-    document: "ticket_documents/ticket2.pdf",
-    price: "60",
-    date_added: "2024-01-02T09:00:00Z",
-    seller: {
-      initial: "J",
-      name: "John Doe",
-      email: "john@example.com"
-    },
-    buyer: {
-      initial: "E",
-      name: "Emma Brown",
-      email: "emma@example.com"
-    }
-  },
-  {
-    id: "3",
-    event_id: "103",
-    quantity: "3",
-    status: "Refused",
-    sold: "false",
-    Row: "C",
-    Section: "Main Hall",
-    buyer_id: null,
-    document: "ticket_documents/ticket3.pdf",
-    price: "70",
-    date_added: "2024-01-03T10:00:00Z",
-    seller: {
-      initial: "R",
-      name: "Robert Wilson",
-      email: "robert@example.com"
-    },
-    buyer: null
-  },
-  {
-    id: "4",
-    event_id: "104",
-    quantity: "2",
-    status: "Accepted",
-    sold: "true",
-    Row: "D",
-    Section: "Side",
-    buyer_id: "204",
-    document: "ticket_documents/ticket4.pdf",
-    price: "80",
-    date_added: "2024-01-04T11:00:00Z",
-    seller: {
-      initial: "A",
-      name: "Alice Johnson",
-      email: "alice@example.com"
-    },
-    buyer: {
-      initial: "B",
-      name: "Bob Brown",
-      email: "bob@example.com"
-    }
-  },
-  {
-    id: "5",
-    event_id: "105",
-    quantity: "4",
-    status: "Accepted",
-    sold: "true",
-    Row: "E",
-    Section: "Back",
-    buyer_id: "205",
-    document: "ticket_documents/ticket5.pdf",
-    price: "90",
-    date_added: "2024-01-05T12:00:00Z",
-    seller: {
-      initial: "C",
-      name: "Charlie Wilson",
-      email: "charlie@example.com"
-    },
-    buyer: {
-      initial: "D",
-      name: "David Smith",
-      email: "david@example.com"
-    }
-  },
-  {
-    id: "6",
-    event_id: "106",
-    quantity: "1",
-    status: "Refused",
-    sold: "false",
-    Row: "F",
-    Section: "Balcony",
-    buyer_id: null,
-    document: "ticket_documents/ticket6.pdf",
-    price: "100",
-    date_added: "2024-01-06T13:00:00Z",
-    seller: {
-      initial: "E",
-      name: "Emma Johnson",
-      email: "emma@example.com"
-    },
-    buyer: null
-  },
-  {
-    id: "7",
-    event_id: "107",
-    quantity: "3",
-    status: "Accepted",
-    sold: "false",
-    Row: "G",
-    Section: "Main Hall",
-    buyer_id: null,
-    document: "ticket_documents/ticket7.pdf",
-    price: "110",
-    date_added: "2024-01-07T14:00:00Z",
-    seller: {
-      initial: "F",
-      name: "Frank Brown",
-      email: "frank@example.com"
-    },
-    buyer: null
-  },
-  {
-    id: "8",
-    event_id: "108",
-    quantity: "2",
-    status: "Accepted",
-    sold: "true",
-    Row: "H",
-    Section: "Front",
-    buyer_id: "208",
-    document: "ticket_documents/ticket8.pdf",
-    price: "120",
-    date_added: "2024-01-08T15:00:00Z",
-    seller: {
-      initial: "G",
-      name: "Grace Wilson",
-      email: "grace@example.com"
-    },
-    buyer: {
-      initial: "H",
-      name: "Harry Smith",
-      email: "harry@example.com"
-    }
-  },
-  {
-    id: "9",
-    event_id: "109",
-    quantity: "1",
-    status: "Accepted",
-    sold: "false",
-    Row: "I",
-    Section: "Side",
-    buyer_id: null,
-    document: "ticket_documents/ticket9.pdf",
-    price: "130",
-    date_added: "2024-01-09T16:00:00Z",
-    seller: {
-      initial: "I",
-      name: "Isabella Johnson",
-      email: "isabella@example.com"
-    },
-    buyer: null
-  },
-]
+
 
 
 
@@ -281,6 +90,20 @@ export default function AllTikets() {
   const [selected, setSelected] = React.useState([])
   const [open, setOpen] = React.useState(false)
   
+  const [tickets, setTickets] = useState([]);
+  const apiUrl = "http://127.0.0.1:8000";
+  useEffect(() => {
+      // Fetch ticket data from the backend
+      axios.get('http://127.0.0.1:8000/api/admin/Tickets/')
+          .then(response => {
+              setTickets(response.data);
+              console.log(response.data)
+              
+          })
+          .catch(error => {
+              console.error('Error fetching tickets:', error);
+          });
+  }, []); 
   
   
   const renderFilters = () => (
@@ -316,14 +139,12 @@ if(searchQuery ==''){
 setFilterSearchCourse(tickets);
   }
 else{
-const filteredtickets = tickets.filter((ticket) =>
-ticket.id.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.date_added.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.seller.name.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.seller.email.toLowerCase().includes(searchQuery.toLowerCase())
-||
-ticket.status.toLowerCase().includes(searchQuery.toLowerCase())
-
+  const filteredtickets = tickets.filter((ticket) =>
+  (typeof ticket.id === 'string' && ticket.id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  ticket.date_added.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.seller_username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.seller_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.status_display.toLowerCase().includes(searchQuery.toLowerCase())
 );
 setFilterSearchCourse(filteredtickets)
 }
@@ -341,7 +162,7 @@ React.useEffect(() => {
     setFilterStatusTickets(filterSearchtickets);
   } else {
 
-    const filter = filterSearchtickets.filter(ticket => ticket.status === selectedOption);
+    const filter = filterSearchtickets.filter(ticket => ticket.status_display === selectedOption);
       setFilterStatusTickets(filter);
 
     }
@@ -373,9 +194,9 @@ const handleDownloadPDF = () => {
     doc.rect(10, yPos, columnWidths.reduce((acc, width) => acc + width, 0), 10, 'F'); 
     doc.setTextColor(0, 0, 0); 
     doc.text(`INV-${ticket.id}`, 15, yPos + 8);
-    doc.text(ticket.date_added, 55, yPos + 8);
+    doc.text(ticket.date_added, 40, yPos + 8);
     doc.text(ticket.status, 105, yPos + 8);
-    doc.text(`${ticket.seller.name} (${ticket.seller.email})`, 130, yPos + 8);
+    doc.text(`${ticket.seller_username} (${ticket.seller_email})`, 130, yPos + 8);
     yPos += 10;
   });
 
@@ -422,7 +243,7 @@ console.log(documentUrl);
             }}
           >
             <Typography level="h2" component="h1">
-              Orders
+              Tickets
             </Typography>
             <Button
               color="primary"
@@ -488,7 +309,7 @@ console.log(documentUrl);
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for order</FormLabel>
+          <FormLabel>Search for Ticket</FormLabel>
           <Input
             size="sm"
             placeholder="Search"
@@ -608,28 +429,28 @@ console.log(documentUrl);
                         Accepted: <CheckRoundedIcon />,
                         Progress: <AutorenewRoundedIcon />,
                         Refused: <BlockIcon />
-                      }[ticket.status]
+                      }[ticket.status_display]
                     }
                     color={
                       {
                         Accepted: "success",
                         Progress: "neutral",
                         Refused: "danger"
-                      }[ticket.status]
+                      }[ticket.status_display]
                     }
                   >
-                    {ticket.status}
+                    {ticket.status_display}
                   </Chip>
                 </td>
                 <td>
                   <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                    <Avatar size="sm" alt={ticket.seller.name}></Avatar>
+                    <Avatar size="sm" alt={ticket.seller_username} src={ticket.seller_profile_picture}></Avatar>
                     <div>
                       <Typography level="body-xs">
-                        {ticket.seller.name}
+                        {ticket.seller_username}
                       </Typography>
                       <Typography level="body-xs">
-                        {ticket.seller.email}
+                        {ticket.seller_email}
                       </Typography>
                     </div>
                   </Box>
