@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!r1_w6d1rzmf0p54liy&a(t+zb--#332kk3=qy46_!e)upnxl^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["funpass.io","127.0.0.1","localhost"]
 
 
 # Application definition
@@ -61,11 +61,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://localhost:5173",
     'http://127.0.0.1',
-    # "https://aml-school.com"  # For production
+    "http://funpass.io/"  # For production
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    # "https://aml-school.com",
+    "http://funpass.io",
     "http://localhost",
 ]
 ROOT_URLCONF = 'TICKETS.urls'
