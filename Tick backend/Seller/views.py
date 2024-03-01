@@ -39,7 +39,40 @@ class CheckNotificationsView(generics.ListAPIView):
         # Filter tickets by the currently authenticated user
         return Notifications.objects.filter(Receiver=self.request.user)
 
+# from twilio.rest import Client
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
 
+# # Initialize the Twilio client
+# account_sid = 'ACab4b57094c5c465f7e7ec5a5755d3ef1'
+# auth_token = 'c3c74cf1b8d5f67589883baeed5df13e'
+# client = Client(account_sid, auth_token)
+
+# # Define the Twilio WhatsApp sender number
+# twilio_sender_number = 'whatsapp:+14155238886'
+# from twilio.base.exceptions import TwilioRestException
+# @csrf_exempt
+# def send_whatsapp_confirmation(sender_name, sender_number):
+#     try:
+#         confirmation_message = f"Hi {sender_name}, your ticket order has been confirmed. " \
+#                                 f"You can download it now from funpass.io."
+
+#         # Send the confirmation message using Twilio
+#         message = client.messages.create(
+#             from_=twilio_sender_number,
+#             body=confirmation_message,
+#             to=sender_number
+#         )
+#         print(f"WhatsApp message sent successfully. SID: {message.sid}")
+#         return HttpResponse("WhatsApp confirmation message sent successfully.")
+#     except TwilioRestException as e:
+#         # Log the Twilio exception
+#         print(f"Failed to send WhatsApp message: {str(e)}")
+#         return HttpResponse(f"Failed to send WhatsApp message: {str(e)}", status=500)
+from Accounts.views import send_whatsapp_confirmation,send_email_confirmation
+from django.contrib.sites.shortcuts import get_current_site
+
+# Inside your Updateorderstatus view or wherever you need to generate the URLs
 class Updateorderstatus(generics.RetrieveUpdateAPIView):
     serializer_class = OrderUpdateSerilizer
     permission_classes = [IsAuthenticated]
@@ -52,15 +85,19 @@ class Updateorderstatus(generics.RetrieveUpdateAPIView):
         response = super().update(request, *args, **kwargs)
         instance = self.get_object()
         if instance.status == 'Confirmed':
-            # Create notification for the buyer
-            message = f'Your order for ticket {instance.ticket.id} has been confirmed.'
-            notification_data = {'Receiver': instance.buyer.id, 'message': message}
-            notification_serializer = NotificationSerializer(data=notification_data)
-            if notification_serializer.is_valid():
-                notification_serializer.save()
+            # Call the function to send WhatsApp confirmation message
+            # Pass the media URL if available
+            media_url = str(instance.ticket.document.url) if instance.ticket.document else None
+            send_email_confirmation(instance.buyer.username, instance.buyer.email)
+            print(instance.buyer.username, instance.buyer.email)
+            # Construct absolute URL for media file
+            if media_url:
+                absolute_media_url = request.build_absolute_uri(media_url)
+            else:
+                absolute_media_url = None
+
+            send_whatsapp_confirmation(instance.buyer.username, instance.buyer.phone_number, media_url=absolute_media_url)
+            
+            print(instance.buyer.username, instance.buyer.phone_number, media_url)
+           
         return response
-
-
-
-    
-    

@@ -39,7 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], blank=True, null=True)
     address = models.TextField(default=None, blank=True, null=True)
-
+    phone_number = models.TextField(max_length=20,default=None,blank=True,null=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
