@@ -25,3 +25,8 @@ class Creditcardserializer(serializers.ModelSerializer):
     class Meta:
         model = CreditCard
         fields = '__all__'
+
+
+class WhatsAppMessageSerializer(serializers.Serializer):
+    number = serializers.CharField()
+    message = serializers.CharField()
