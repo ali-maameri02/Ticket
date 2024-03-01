@@ -91,10 +91,10 @@ export default function AllTikets() {
   const [open, setOpen] = React.useState(false)
   
   const [tickets, setTickets] = useState([]);
-  const apiUrl = "http://127.0.0.1:8000";
+  const apiUrl = "http://funpass.io";
   useEffect(() => {
       // Fetch ticket data from the backend
-      axios.get('http://127.0.0.1:8000/api/admin/Tickets/')
+      axios.get('http://funpass.io/api/admin/Tickets/')
           .then(response => {
               setTickets(response.data);
               console.log(response.data)

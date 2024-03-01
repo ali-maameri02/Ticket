@@ -46,7 +46,7 @@ export default function Home() {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/admin/calculate-statistics/');
+        const response = await axios.get('http://funpass.io/api/admin/calculate-statistics/');
         setStatistics(response.data);
         // console.log(response.data)
       } catch (error) {
@@ -89,7 +89,7 @@ export default function Home() {
   
   const fetchSalesAndUsersData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/admin/sales_and_users_data/');
+      const response = await fetch('http://funpass.io/api/admin/sales_and_users_data/');
       if (response.ok) {
         const data = await response.json();
         const { salesData, usersData } = data;
@@ -128,7 +128,7 @@ export default function Home() {
     useEffect(() => {
         const fetchTicketStatistics = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/admin/ticket_statistics/');
+                const response = await axios.get('http://funpass.io/api/admin/ticket_statistics/');
                 console.log(response.data)
                 const pieData = {
                     series: Object.values(response.data),

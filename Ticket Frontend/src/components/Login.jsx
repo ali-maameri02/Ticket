@@ -35,7 +35,7 @@ export default function Login() {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/users/login/', loginData);
+      const response = await axios.post('http://funpass.io/api/users/login/', loginData);
       // Handle the response as needed
       console.log('Login Response:', response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ export default function Login() {
 
   const handleSignupSubmit = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/users/signup/', signupData);
+      const response = await axios.post('http://funpass.io/api/users/signup/', signupData);
       console.log('Signup Response:', response.data);
     } catch (error) {
       console.error('Error during signup:', error);

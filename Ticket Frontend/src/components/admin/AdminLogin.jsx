@@ -34,7 +34,7 @@ export default function AdminLogin(props) {
       const password = formData.get('password');
 
       try {
-          const response = await axios.post('http://127.0.0.1:8000/api/admin/Login/', {  // Adjust the URL as per your Django URL configuration
+          const response = await axios.post('http://funpass.io/api/admin/Login/', {  // Adjust the URL as per your Django URL configuration
               username: email,
               password: password
               
