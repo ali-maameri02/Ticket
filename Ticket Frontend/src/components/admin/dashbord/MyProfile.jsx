@@ -30,7 +30,8 @@ import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-
+import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
 export default function MyProfile() {
 
     const contact = {
@@ -42,6 +43,8 @@ export default function MyProfile() {
         favorite: true,
         email:"aghg@gamil.com"
       };
+      const { t } = useTranslation();
+    const storedLanguage = Cookies.get('i18next_lng');
     
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
@@ -75,14 +78,14 @@ export default function MyProfile() {
               fontSize={12}
               fontWeight={500}
             >
-              Users
+              {t("users")}
             </Link>
             <Typography color="primary" fontWeight={500} fontSize={12}>
-              My profile
+              {t("my_profile")}
             </Typography>
           </Breadcrumbs>
           <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            My profile
+          {t("my_profile")}
           </Typography>
         </Box>
        
@@ -99,9 +102,9 @@ export default function MyProfile() {
       >
         <Card>
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Personal info</Typography>
+            <Typography level="title-md">{t("personal_info")}</Typography>
             <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
+            {t("customize_profile_info")}
             </Typography>
           </Box>
           <Divider />
@@ -133,7 +136,7 @@ export default function MyProfile() {
                   position: 'absolute',
                   zIndex: 2,
                   borderRadius: '50%',
-                  left: 100,
+                  [storedLanguage === "ar" ? 'right' : 'left']: 100,
                   top: 170,
                   boxShadow: 'sm',
                 }}
@@ -141,20 +144,20 @@ export default function MyProfile() {
                 <EditRoundedIcon />
               </IconButton>
             </Stack>
-            <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            <Stack spacing={2} sx={{ flexGrow: 1, marginLeft:[storedLanguage==='ar'?"0 !important":"1rem !important"],marginRight:[storedLanguage==='ar'?"1rem !important":"0 !important"]}}>
               <Stack spacing={1}>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("name")}</FormLabel>
                 <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
+                  <Input size="sm" placeholder={t("first_name")}/>
+                  <Input size="sm" placeholder={t("last_name")}sx={{ flexGrow: 1 }} />
                 </FormControl>
               </Stack>
               <Stack direction="row" spacing={2}>
                
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("email")}</FormLabel>
                   <Input
                     size="sm"
                     type="email"
@@ -198,7 +201,7 @@ export default function MyProfile() {
                     position: 'absolute',
                     zIndex: 2,
                     borderRadius: '50%',
-                    left: 85,
+                    [storedLanguage === "ar" ? 'right' : 'left']: 85,
                     top: 180,
                     boxShadow: 'sm',
                   }}
@@ -206,8 +209,8 @@ export default function MyProfile() {
                   <EditRoundedIcon />
                 </IconButton>
               </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
+              <Stack spacing={1} sx={{ flexGrow: 1 ,marginLeft:[storedLanguage==='ar'?"0 !important":"1rem !important"],marginRight:[storedLanguage==='ar'?"1rem !important":"0 !important"]}}>
+                <FormLabel>{t("name")}</FormLabel>
                 <FormControl
                   sx={{
                     display: {
@@ -217,58 +220,32 @@ export default function MyProfile() {
                     gap: 2,
                   }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
+                  <Input size="sm" placeholder={t("first_name")} />
+                  <Input size="sm" placeholder={t("last_name")} />
                 </FormControl>
               </Stack>
             </Stack>
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t("email")}</FormLabel>
               <Input
                 size="sm"
                 type="email"
                 startDecorator={<EmailRoundedIcon />}
                 placeholder="email"
-                defaultValue={contact.avatar}
+                defaultValue={contact.email}
                 sx={{ flexGrow: 1 }}
               />
             </FormControl>
          
-            <div>
-              <FormControl sx={{ display: { sm: 'contents' } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
-                >
-                  <Option value="1">
-                    Indochina Time (Bangkok){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
+           
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
               <Button size="sm" variant="outlined" color="neutral">
-                Cancel
+                {t("cancel")}
               </Button>
               <Button size="sm" variant="solid">
-                Save
+                {t('save')}
               </Button>
             </CardActions>
           </CardOverflow>

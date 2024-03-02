@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token  # Update this import
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer , UserDataSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
@@ -57,5 +57,44 @@ class UserLoginView(APIView):
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from .serializers import UserSerializer, UserDataSerializer
+
+class GetUserData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_serializer = UserSerializer(user)
+        custom_user_serializer = UserDataSerializer(user)
+        
+        user_data = {
+            'username': user.username,
+            'email': user.email,
+            'isActive': user.is_active,
+            'isStaff': user.is_staff,
+            'gender': user.gender,
+            'profile_picture': user.profile_picture.url if user.profile_picture else None, 
+            'address': user.address,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+
+        custom_user_data = custom_user_serializer.data
+        
+        return Response(
+            { 
+                'message': 'User data retrieved successfully',
+                'user_info': user_data,
+                'custom_user_info': custom_user_data,
+            },
+            status=status.HTTP_200_OK
+        )
 
 
+  

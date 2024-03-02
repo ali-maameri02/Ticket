@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --left: 0px;
+    --transform: 100%
+}
+
+.header {
+    box-shadow: none !important;
+    /* background-color: transparent !important; */
+}
+
+.logo {
+    width: 8rem;
+    min-width: 5rem;
+}
+
+.header .logo {
+    width: 10rem;
+    min-width: 5rem;
+}
+
+.sidebar .logo {
+    width: 8rem;
+}
+
+.sidebar .css-16k4q1o-JoyDrawer-content {
+    padding: 1rem 1.5rem;
+    background-color: white;
+    left: var(--drawer-left);
+}
+
+.css-1jw7p1f-JoyDrawer-content {
+    left: var(--left) !important;
+    transform: translateX(var(--transform)) !important;
+}
+
+.sidebar .css-1jba045-JoyAccordionSummary-button:not(.Mui-selected, [aria-selected="true"]):hover {
+    background-color: transparent;
+}
+
+.css-7pgdaa-MuiButtonBase-root-MuiPickersDay-root {
+    color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-sz8tj4-MuiTypography-root-MuiDayCalendar-weekDayLabel {
+    color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-1vooibu-MuiSvgIcon-root {
+    color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-1tkx1wf-MuiSvgIcon-root-MuiPickersCalendarHeader-switchViewIcon {
+    color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-1ii0jxc-MuiButtonBase-root-MuiPickersDay-root {
+    color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-1ii0jxc-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+    border-color: var(--joy-palette-text-secondary, var(--joy-palette-neutral-700, #32383E)) !important;
+}
+
+.css-1q04gal-MuiDateCalendar-root {
+    width: auto;
+}
+
+.map-area {
+    cursor: pointer;
+    /* Set cursor to pointer to indicate the area is clickable */
+}
+
+.map-area:hover {
+    opacity: 0.5;
+    /* Set opacity to make the area semi-transparent when hovered */
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+    width: 10rem;
+}

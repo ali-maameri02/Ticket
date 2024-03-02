@@ -2,13 +2,13 @@ import React from 'react'
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { useRouteError } from "react-router-dom";
+// import { useRouteError } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Logo from './components/Logo';
 import Error404 from './components/Error404';
 export default function ErrorPage() {
-  const error = useRouteError();
-  console.error(error);
+  // const error = useRouteError();
+  // console.error(error);
   const renderHeader = (
     <Box
       component="header"

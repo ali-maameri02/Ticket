@@ -58,3 +58,13 @@ class Notifications (models.Model):
     message = models.CharField(max_length=50)
     def __str__(self):
         return f"{self.message} for {self.Receiver}"
+
+
+class CreditCard(models.Model):
+    #card-number', '#card-name', '#card-year', '#card-month', '#card-ccv'
+    User= models.ForeignKey(CustomUser, on_delete=models.CASCADE,default=None,blank=True)
+    Card_Number = models.CharField(max_length=50,default=None)
+    Card_Name = models.CharField(max_length=50,default=None)
+    Card_Year = models.CharField(max_length=50,default=None)
+    Card_Month = models.CharField(max_length=50,default=None)
+    Card_CCV = models.CharField(max_length=50,default=None)
