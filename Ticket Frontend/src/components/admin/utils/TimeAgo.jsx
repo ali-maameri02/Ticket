@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next';
 function TimeAgo({ timestamp }) {
   const timeString = calculateTimeAgo(timestamp);
 
@@ -9,6 +9,7 @@ function TimeAgo({ timestamp }) {
 }
 
 function calculateTimeAgo(timestamp) {
+  const { t } = useTranslation();
   const now = new Date();
   const pastTime = new Date(timestamp);
   const timeDifference = now - pastTime;
@@ -21,7 +22,7 @@ function calculateTimeAgo(timestamp) {
   const hours = Math.floor(minutes / 60);
 
   if (hours >= 1) {
-    return `about ${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    return `${t('about')}${hours} ${hours === 1 ? (t("hour")) : (t("hours")) } ${(t('ago'))}`;
   } else if (minutes >= 1) {
     return `about ${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
   } else {

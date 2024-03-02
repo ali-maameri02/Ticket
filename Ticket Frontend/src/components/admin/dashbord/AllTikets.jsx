@@ -37,7 +37,7 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
-
+import Cookies from 'js-cookie';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
@@ -45,8 +45,205 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import DeleteIcon from '@mui/icons-material/Delete';
+<<<<<<< HEAD
+import { useTranslation } from 'react-i18next';
+const tickets = [
+  {
+    id: "1",
+    event_id: "101",
+    quantity: "2",
+    status: "Accepted",
+    sold: "true",
+    Row: "A",
+    Section: "Front",
+    buyer_id: "201",
+    document: "ticket1.pdf",
+    price: "50",
+    date_added: "2024-01-01T08:00:00Z",
+    seller: {
+      initial: "S",
+      name: "Sarah Johnson",
+      email: "sarah@example.com"
+    },
+    buyer: {
+      initial: "M",
+      name: "Michael Smith",
+      email: "michael@example.com"
+    }
+  },
+  {
+    id: "2",
+    event_id: "102",
+    quantity: "1",
+    status: "Progress",
+    sold: "true",
+    Row: "B",
+    Section: "Balcony",
+    buyer_id: "202",
+    document: "ticket_documents/ticket2.pdf",
+    price: "60",
+    date_added: "2024-01-02T09:00:00Z",
+    seller: {
+      initial: "J",
+      name: "John Doe",
+      email: "john@example.com"
+    },
+    buyer: {
+      initial: "E",
+      name: "Emma Brown",
+      email: "emma@example.com"
+    }
+  },
+  {
+    id: "3",
+    event_id: "103",
+    quantity: "3",
+    status: "Refused",
+    sold: "false",
+    Row: "C",
+    Section: "Main Hall",
+    buyer_id: null,
+    document: "ticket_documents/ticket3.pdf",
+    price: "70",
+    date_added: "2024-01-03T10:00:00Z",
+    seller: {
+      initial: "R",
+      name: "Robert Wilson",
+      email: "robert@example.com"
+    },
+    buyer: null
+  },
+  {
+    id: "4",
+    event_id: "104",
+    quantity: "2",
+    status: "Accepted",
+    sold: "true",
+    Row: "D",
+    Section: "Side",
+    buyer_id: "204",
+    document: "ticket_documents/ticket4.pdf",
+    price: "80",
+    date_added: "2024-01-04T11:00:00Z",
+    seller: {
+      initial: "A",
+      name: "Alice Johnson",
+      email: "alice@example.com"
+    },
+    buyer: {
+      initial: "B",
+      name: "Bob Brown",
+      email: "bob@example.com"
+    }
+  },
+  {
+    id: "5",
+    event_id: "105",
+    quantity: "4",
+    status: "Accepted",
+    sold: "true",
+    Row: "E",
+    Section: "Back",
+    buyer_id: "205",
+    document: "ticket_documents/ticket5.pdf",
+    price: "90",
+    date_added: "2024-01-05T12:00:00Z",
+    seller: {
+      initial: "C",
+      name: "Charlie Wilson",
+      email: "charlie@example.com"
+    },
+    buyer: {
+      initial: "D",
+      name: "David Smith",
+      email: "david@example.com"
+    }
+  },
+  {
+    id: "6",
+    event_id: "106",
+    quantity: "1",
+    status: "Refused",
+    sold: "false",
+    Row: "F",
+    Section: "Balcony",
+    buyer_id: null,
+    document: "ticket_documents/ticket6.pdf",
+    price: "100",
+    date_added: "2024-01-06T13:00:00Z",
+    seller: {
+      initial: "E",
+      name: "Emma Johnson",
+      email: "emma@example.com"
+    },
+    buyer: null
+  },
+  {
+    id: "7",
+    event_id: "107",
+    quantity: "3",
+    status: "Accepted",
+    sold: "false",
+    Row: "G",
+    Section: "Main Hall",
+    buyer_id: null,
+    document: "ticket_documents/ticket7.pdf",
+    price: "110",
+    date_added: "2024-01-07T14:00:00Z",
+    seller: {
+      initial: "F",
+      name: "Frank Brown",
+      email: "frank@example.com"
+    },
+    buyer: null
+  },
+  {
+    id: "8",
+    event_id: "108",
+    quantity: "2",
+    status: "Accepted",
+    sold: "true",
+    Row: "H",
+    Section: "Front",
+    buyer_id: "208",
+    document: "ticket_documents/ticket8.pdf",
+    price: "120",
+    date_added: "2024-01-08T15:00:00Z",
+    seller: {
+      initial: "G",
+      name: "Grace Wilson",
+      email: "grace@example.com"
+    },
+    buyer: {
+      initial: "H",
+      name: "Harry Smith",
+      email: "harry@example.com"
+    }
+  },
+  {
+    id: "9",
+    event_id: "109",
+    quantity: "1",
+    status: "Accepted",
+    sold: "false",
+    Row: "I",
+    Section: "Side",
+    buyer_id: null,
+    document: "ticket_documents/ticket9.pdf",
+    price: "130",
+    date_added: "2024-01-09T16:00:00Z",
+    seller: {
+      initial: "I",
+      name: "Isabella Johnson",
+      email: "isabella@example.com"
+    },
+    buyer: null
+  },
+]
+=======
 
 
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
 
 
 
@@ -89,6 +286,10 @@ export default function AllTikets() {
   const [order, setOrder] = React.useState("desc")
   const [selected, setSelected] = React.useState([])
   const [open, setOpen] = React.useState(false)
+<<<<<<< HEAD
+  const { t } = useTranslation();
+  const storedLanguage = Cookies.get('i18next_lng');
+=======
   
   const [tickets, setTickets] = useState([]);
   const apiUrl = "http://funpass.io";
@@ -106,20 +307,21 @@ export default function AllTikets() {
   }, []); 
   
   
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
-        <FormLabel>Status</FormLabel>
+        <FormLabel>{t("status")}</FormLabel>
         <Select
           size="sm"
-          placeholder="Filter by status"
+          placeholder={t('filter_by_status')}
           slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
           onChange={handleSelectChange}
         >
-          <Option value="">All</Option>
-          <Option value="Accepted">Accepted</Option>
-          <Option value="Refused">Refused</Option>
-          <Option value="Progress">Progress</Option>
+          <Option value="">{t("all")}</Option>
+          <Option value="Accepted">{t("accepted")}</Option>
+          <Option value="Refused">{t("refused")}</Option>
+          <Option value="Progress">{t("progress")}</Option>
         </Select>
       </FormControl>
       
@@ -227,7 +429,7 @@ console.log(documentUrl);
               <HomeRoundedIcon />
             </Link>
             <Typography color="primary" fontWeight={500} fontSize={12}>
-              All Tickets
+             {t("all_tickets")}
             </Typography>
           </Breadcrumbs>
           <Box
@@ -243,15 +445,21 @@ console.log(documentUrl);
             }}
           >
             <Typography level="h2" component="h1">
+<<<<<<< HEAD
+              {t("all_tickets")}
+=======
               Tickets
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
             </Typography>
             <Button
               color="primary"
-              startDecorator={<DownloadRoundedIcon />}
+  
+              startDecorator={storedLanguage === 'en'? <DownloadRoundedIcon /> : null}
+              endDecorator={storedLanguage === 'ar' ? <DownloadRoundedIcon /> : null}
               size="sm"
               onClick={handleDownloadPDF}
             >
-              Download PDF
+              {t("download")} PDF
             </Button>
           </Box>
           <React.Fragment >
@@ -265,7 +473,7 @@ console.log(documentUrl);
       >
         <Input
           size="sm"
-          placeholder="Search"
+          placeholder={t('search')}
           startDecorator={<SearchIcon />}
           sx={{ flexGrow: 1 }}
           onChange={handleSearchInputChange}
@@ -289,7 +497,7 @@ console.log(documentUrl);
             <Sheet sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {renderFilters()}
               <Button color="primary" onClick={() => setOpen(false)}>
-                Submit
+                {t("submit")}
               </Button>
             </Sheet>
           </ModalDialog>
@@ -309,10 +517,14 @@ console.log(documentUrl);
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
+<<<<<<< HEAD
+          <FormLabel>{t("search_for_order")}</FormLabel>
+=======
           <FormLabel>Search for Ticket</FormLabel>
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
           <Input
             size="sm"
-            placeholder="Search"
+            placeholder={t('search')}
             startDecorator={<SearchIcon />}
             onChange={handleSearchInputChange}
 
@@ -370,7 +582,7 @@ console.log(documentUrl);
                   sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
-              <th style={{ width: 120, padding: "12px 6px" }}>
+              <th style={{ width: 120, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>
                 <Link
                   underline="none"
                   color="primary"
@@ -386,13 +598,13 @@ console.log(documentUrl);
                     }
                   }}
                 >
-                  Invoice
+                  {t('ticket')}
                 </Link>
               </th>
-              <th style={{ width: 140, padding: "12px 6px" }}>Date</th>
-              <th style={{ width: 140, padding: "12px 6px" }}>Status</th>
-              <th style={{ width: 240, padding: "12px 6px" }}>Seller</th>
-              <th style={{ width: 140, padding: "12px 6px" }}> </th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("date")}</th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("status")}</th>
+              <th style={{ width: 240, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t('seller')}</th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}> </th>
             </tr>
           </thead>
           <tbody>
@@ -458,7 +670,7 @@ console.log(documentUrl);
                 <td>
                   <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
                     <Link level="body-xs" component="button" onClick={() => handleDownload(ticket.document)}>
-                      Download
+                      {t("download")}
                     </Link>
                     <RowMenu />
                   </Box>

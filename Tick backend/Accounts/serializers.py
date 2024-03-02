@@ -19,6 +19,14 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifications
         fields = '__all__'
+<<<<<<< HEAD
+        
+class UserDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_active', 'is_staff', 'profile_picture', 'gender', 'address')
+=======
 
 
 class Creditcardserializer(serializers.ModelSerializer):
@@ -30,3 +38,4 @@ class Creditcardserializer(serializers.ModelSerializer):
 class WhatsAppMessageSerializer(serializers.Serializer):
     number = serializers.CharField()
     message = serializers.CharField()
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2

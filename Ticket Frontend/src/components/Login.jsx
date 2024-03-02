@@ -8,9 +8,13 @@ import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
-export default function Login() {
+import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
+export default function Login(props) {
+  const { t } = useTranslation();
+  const storedLanguage = Cookies.get('i18next_lng');
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openSignup, setOpenSignup] = React.useState(false);
   const [loginData, setLoginData] = React.useState({
@@ -22,7 +26,8 @@ export default function Login() {
     confirmEmail: '',
     password: '',
   });
-
+  const [signupError, setSignupError] = React.useState('');
+  const [loginError, setLoginError] = React.useState('');
   const handleLogin = () => {
     setOpenLogin(true);
     setOpenSignup(false);
@@ -35,11 +40,22 @@ export default function Login() {
 
   const handleLoginSubmit = async () => {
     try {
+<<<<<<< HEAD
+      console.log(loginData);
+      const response = await axios.post('http://127.0.0.1:8000/api/users/login/', loginData);
+=======
       const response = await axios.post('http://funpass.io/api/users/login/', loginData);
       // Handle the response as needed
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
       console.log('Login Response:', response.data);
+      setLoginError('');
+      setOpenLogin(false);
+      setOpenSignup(false);
+      const token = response.data.token;
+      localStorage.setItem('authTokenUser', token);
     } catch (error) {
       console.error('Error during login:', error);
+      setLoginError(t('login_error'));
     }
   };
 
@@ -47,18 +63,34 @@ export default function Login() {
     try {
       const response = await axios.post('http://funpass.io/api/users/signup/', signupData);
       console.log('Signup Response:', response.data);
+      setSignupError('');
+      setOpenLogin(true);
+      setOpenSignup(false);
+
     } catch (error) {
-      console.error('Error during signup:', error);
+      console.error('Error during signup:',error);
+      if(error.response.data.email[0]==='User with this email already exists.'){
+        setSignupError(t('user_exists'))
+      }else{
+        setSignupError(t('singup_error'));
+      }
+      
+
     }
   };
 
   return (
+    
     <React.Fragment>
-      <Button variant="plain" onClick={handleSignup} sx={{ color: "#3399ff", '&:hover': { backgroundColor: 'transparent !important' }, display: { xs: 'none', md: 'inline-block' } }}>
-        Sign up
+      <Button variant="plain" onClick={handleSignup} sx={{ color: "#3399ff",transition: 'all 0.3s ease-in-out', '&:hover': { backgroundColor: 'transparent !important' ,color:"#2370bd"}, display: {xs:"none", sm:"none", md: 'none', lg: [props.justlogin === 'true' ? 'none' : 'inline-block']} }}>
+        {t("sign_up")}
       </Button>
-      <Button variant="soft" onClick={handleLogin} sx={{ backgroundColor: '#3399ff', boxShadow: '0 2px 8px rgb(27 39 51 / 15%)', borderRadius: '300px !important', color: "white" }}>
-        Login
+      <Button variant="soft" onClick={handleLogin} sx={{ backgroundColor: '#3399ff', boxShadow: '0 2px 8px rgb(27 39 51 / 15%)', borderRadius: '300px !important', color: "white" ,
+       transition: 'all 0.3s ease-in-out',
+      '&:hover': {
+        backgroundColor: '#2370bd', // Adjusted box-shadow on hover
+    }, }}>
+       {t("login")}
       </Button>
 
       {/* Login Modal */}
@@ -78,15 +110,15 @@ export default function Login() {
             boxShadow: 'lg',
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <ModalClose variant="plain" sx={{ m: 1,[storedLanguage === "ar" ? "left": "right"]: "var(--ModalClose-inset, 0.625rem) ",[storedLanguage === "en" ? "left": "right"]: "auto"}} />
           <div>
             <Typography level="h4" component="h1">
-              <b>Welcome Again!</b>
+              <b>{t("welcome_again")}</b>
             </Typography>
-            <Typography level="body-sm">Sign in to continue.</Typography>
+            <Typography level="body-sm">{t("sign_in_continue")}</Typography>
           </div>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{t("email")}</FormLabel>
             <Input
               name="username"
               type="email"
@@ -95,23 +127,26 @@ export default function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t("password")}</FormLabel>
             <Input
               name="password"
               type="password"
-              placeholder="password"
+              placeholder={t("password")}
               onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
             />
           </FormControl>
           <Button sx={{ backgroundColor: '#3399ff', color: "white", borderRadius: '5px !important', mt: 1, width: '100%' }} onClick={handleLoginSubmit}>
-            Login
+            {t("login")}
           </Button>
           <Typography
             fontSize="sm"
             sx={{ alignSelf: 'center' }}
           >
-            Need an account? <Button variant="plain" onClick={handleSignup} sx={{ padding: "0", color: "#3399ff", '&:hover': { backgroundColor: 'transparent !important' } }}>Sign up</Button>
+            {t("need_account")}? <Button variant="plain" onClick={handleSignup} sx={{ padding: "0", color: "#3399ff", '&:hover': { backgroundColor: 'transparent !important' } }}>{t("sign_up")}</Button>
           </Typography>
+          {loginError && (
+          <Typography textColor={'danger.500'}  sx={{ mt: 1, textAlign: 'center' }}>{loginError}</Typography>
+        )}
         </Sheet>
       </Modal>
 
@@ -132,15 +167,15 @@ export default function Login() {
             boxShadow: 'lg',
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }} />
+          <ModalClose variant="plain" sx={{ m: 1,[storedLanguage === "ar" ? "left": "right"]: "var(--ModalClose-inset, 0.625rem) ",[storedLanguage === "en" ? "left": "right"]: "auto"}} />
           <div>
             <Typography level="h4" component="h1">
-              <b>Welcome!</b>
+              <b>{t("welcome_")}</b>
             </Typography>
-            <Typography level="body-sm">Sign up to continue.</Typography>
+            <Typography level="body-sm">{t("sign_up_continue")}</Typography>
           </div>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{t("email")}</FormLabel>
             <Input
               name="email"
               type="email"
@@ -149,7 +184,7 @@ export default function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Confirm Email</FormLabel>
+            <FormLabel>{t("confirm_email")}</FormLabel>
             <Input
               name="confirmEmail"
               type="email"
@@ -158,7 +193,7 @@ export default function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t("password")}</FormLabel>
             <Input
               name="password"
               type="password"
@@ -170,15 +205,17 @@ export default function Login() {
             fontSize="sm"
             sx={{ alignSelf: 'center' }}
           >
-            By purchasing a ticket or signing up, you agree to the user agreement and the privacy policy.
-          </Typography>
+{t("agreement_policy")}          </Typography>
           <Button sx={{ backgroundColor: '#3399ff', color: "white", borderRadius: '5px !important', mt: 1, width: '100%' }} onClick={handleSignupSubmit}>
-            Sign Up
+           {t("sign_up")}
           </Button>
           <Typography fontSize="sm"
             sx={{ alignSelf: 'center' }}>
-            Already have an account? <Button variant="plain" onClick={handleLogin} sx={{ padding: "0", color: "#3399ff", '&:hover': { backgroundColor: 'transparent !important' } }}>Login</Button>
+            {t("already_have_account")}? <Button variant="plain" onClick={handleLogin} sx={{ padding: "0", color: "#3399ff", '&:hover': { backgroundColor: 'transparent !important' } }}>{t("login")}</Button>
           </Typography>
+          {signupError && (
+          <Typography textColor={'danger.500'}  sx={{ mt: 1, textAlign: 'center' }}>{signupError}</Typography>
+        )}
         </Sheet>
       </Modal>
     </React.Fragment>
