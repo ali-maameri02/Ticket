@@ -24,12 +24,30 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = "__all__"
 
+
+
 class TicketSerilizer(serializers.ModelSerializer):
-    
-    class Meta :
+    seller_username = serializers.ReadOnlyField(source='seller.username')
+    seller_email = serializers.ReadOnlyField(source='seller.email')
+    seller_profile_picture = serializers.ImageField(source='seller.profile_picture', read_only=True)
+    status_display = serializers.CharField(source='get_status_display')
+
+    class Meta:
         model = Ticket
         fields = "__all__"
-        
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.status != 'Accepted' and instance.status != 'Refused':
+            data['status_display'] = 'Progress'
+        return data
+
+
+class TicketRefusedSerilizer(serializers.ModelSerializer):
+    
+    class Meta :
+        model = TicketRefused
+        fields = "__all__" 
 class TicketupdateSerilizer(serializers.ModelSerializer):
     
     class Meta :

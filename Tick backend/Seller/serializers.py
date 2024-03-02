@@ -7,6 +7,7 @@ class OrderSerilizer(serializers.ModelSerializer):
         model = Order
         fields = "__all__"
 class OrderUpdateSerilizer(serializers.ModelSerializer):
+   
      class Meta:
         model = Order
-        fields =('id','status') 
+        fields =('id','status','ticket') 
