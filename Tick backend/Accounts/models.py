@@ -39,7 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
     gender = models.CharField(max_length=10, choices=[('male', 'Male'), ('female', 'Female')], blank=True, null=True)
     address = models.TextField(default=None, blank=True, null=True)
-
+    phone_number = models.TextField(max_length=20,default=None,blank=True,null=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
@@ -62,7 +62,7 @@ class Notifications (models.Model):
 
 class CreditCard(models.Model):
     #card-number', '#card-name', '#card-year', '#card-month', '#card-ccv'
-    User= models.ForeignKey(CustomUser, on_delete=models.CASCADE,default=None,blank=True)
+    User= models.OneToOneField(CustomUser, on_delete=models.CASCADE,default=None,blank=True)
     Card_Number = models.CharField(max_length=50,default=None)
     Card_Name = models.CharField(max_length=50,default=None)
     Card_Year = models.CharField(max_length=50,default=None)

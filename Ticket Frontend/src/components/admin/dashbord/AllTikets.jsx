@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/joy/Avatar";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -23,7 +24,7 @@ import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import Dropdown from "@mui/joy/Dropdown";
 import { jsPDF } from 'jspdf';
-
+import axios from "axios";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -44,6 +45,7 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import DeleteIcon from '@mui/icons-material/Delete';
+<<<<<<< HEAD
 import { useTranslation } from 'react-i18next';
 const tickets = [
   {
@@ -238,6 +240,10 @@ const tickets = [
     buyer: null
   },
 ]
+=======
+
+
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
 
 
 
@@ -280,8 +286,28 @@ export default function AllTikets() {
   const [order, setOrder] = React.useState("desc")
   const [selected, setSelected] = React.useState([])
   const [open, setOpen] = React.useState(false)
+<<<<<<< HEAD
   const { t } = useTranslation();
   const storedLanguage = Cookies.get('i18next_lng');
+=======
+  
+  const [tickets, setTickets] = useState([]);
+  const apiUrl = "http://funpass.io";
+  useEffect(() => {
+      // Fetch ticket data from the backend
+      axios.get('http://funpass.io/api/admin/Tickets/')
+          .then(response => {
+              setTickets(response.data);
+              console.log(response.data)
+              
+          })
+          .catch(error => {
+              console.error('Error fetching tickets:', error);
+          });
+  }, []); 
+  
+  
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -315,14 +341,12 @@ if(searchQuery ==''){
 setFilterSearchCourse(tickets);
   }
 else{
-const filteredtickets = tickets.filter((ticket) =>
-ticket.id.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.date_added.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.seller.name.toLowerCase().includes(searchQuery.toLowerCase())||
-ticket.seller.email.toLowerCase().includes(searchQuery.toLowerCase())
-||
-ticket.status.toLowerCase().includes(searchQuery.toLowerCase())
-
+  const filteredtickets = tickets.filter((ticket) =>
+  (typeof ticket.id === 'string' && ticket.id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+  ticket.date_added.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.seller_username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.seller_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  ticket.status_display.toLowerCase().includes(searchQuery.toLowerCase())
 );
 setFilterSearchCourse(filteredtickets)
 }
@@ -340,7 +364,7 @@ React.useEffect(() => {
     setFilterStatusTickets(filterSearchtickets);
   } else {
 
-    const filter = filterSearchtickets.filter(ticket => ticket.status === selectedOption);
+    const filter = filterSearchtickets.filter(ticket => ticket.status_display === selectedOption);
       setFilterStatusTickets(filter);
 
     }
@@ -372,9 +396,9 @@ const handleDownloadPDF = () => {
     doc.rect(10, yPos, columnWidths.reduce((acc, width) => acc + width, 0), 10, 'F'); 
     doc.setTextColor(0, 0, 0); 
     doc.text(`INV-${ticket.id}`, 15, yPos + 8);
-    doc.text(ticket.date_added, 55, yPos + 8);
+    doc.text(ticket.date_added, 40, yPos + 8);
     doc.text(ticket.status, 105, yPos + 8);
-    doc.text(`${ticket.seller.name} (${ticket.seller.email})`, 130, yPos + 8);
+    doc.text(`${ticket.seller_username} (${ticket.seller_email})`, 130, yPos + 8);
     yPos += 10;
   });
 
@@ -421,7 +445,11 @@ console.log(documentUrl);
             }}
           >
             <Typography level="h2" component="h1">
+<<<<<<< HEAD
               {t("all_tickets")}
+=======
+              Tickets
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
             </Typography>
             <Button
               color="primary"
@@ -489,7 +517,11 @@ console.log(documentUrl);
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
+<<<<<<< HEAD
           <FormLabel>{t("search_for_order")}</FormLabel>
+=======
+          <FormLabel>Search for Ticket</FormLabel>
+>>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
           <Input
             size="sm"
             placeholder={t('search')}
@@ -609,28 +641,28 @@ console.log(documentUrl);
                         Accepted: <CheckRoundedIcon />,
                         Progress: <AutorenewRoundedIcon />,
                         Refused: <BlockIcon />
-                      }[ticket.status]
+                      }[ticket.status_display]
                     }
                     color={
                       {
                         Accepted: "success",
                         Progress: "neutral",
                         Refused: "danger"
-                      }[ticket.status]
+                      }[ticket.status_display]
                     }
                   >
-                    {ticket.status}
+                    {ticket.status_display}
                   </Chip>
                 </td>
                 <td>
                   <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                    <Avatar size="sm" alt={ticket.seller.name}></Avatar>
+                    <Avatar size="sm" alt={ticket.seller_username} src={ticket.seller_profile_picture}></Avatar>
                     <div>
                       <Typography level="body-xs">
-                        {ticket.seller.name}
+                        {ticket.seller_username}
                       </Typography>
                       <Typography level="body-xs">
-                        {ticket.seller.email}
+                        {ticket.seller_email}
                       </Typography>
                     </div>
                   </Box>

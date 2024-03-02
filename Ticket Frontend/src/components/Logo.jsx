@@ -1,8 +1,8 @@
-import React from 'react'
+import LogoImage from "../assets/Tickpick_black_flat.png";
 
 export default function Logo() {
   return (
-    <img src="../src/assets/Tickpick_black_flat.png" alt="Tickpick_black_flat" 
+    <img src={LogoImage} alt="Tickpick_black_flat" 
     className='logo'  />
   )
 }

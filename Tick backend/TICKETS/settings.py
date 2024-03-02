@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-!r1_w6d1rzmf0p54liy&a(t+zb--#332kk3=qy46_!e)upnxl^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["funpass.io","127.0.0.1","localhost","930e-154-121-98-120.ngrok-free.app"]
+# edge="edghts_2cv26C5jNgZt6kHG7OErAnWMLaJ"
 
 # Application definition
 
@@ -61,12 +61,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://localhost:5173",
     'http://127.0.0.1',
-    # "https://aml-school.com"  # For production
+    "http://funpass.io" , # For production
+    "https://930e-154-121-98-120.ngrok-free.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    # "https://aml-school.com",
+    "http://funpass.io",
     "http://localhost",
+    "https://930e-154-121-98-120.ngrok-free.app",
 ]
 ROOT_URLCONF = 'TICKETS.urls'
 
@@ -135,9 +137,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "Accounts.CustomUser"
+MADA_CARD_APP_ID = '1704948301519'
+MADA_CARD_API_SECRET_KEY = 'b3d4888a-9cfc-3e4a-8c8f-2038ad6fb89a'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@funpass.io'
+EMAIL_HOST_PASSWORD = 'Funpass@2023'
+EMAIL_USE_TLS = False  # Since we are using SSL
+EMAIL_USE_SSL = True
