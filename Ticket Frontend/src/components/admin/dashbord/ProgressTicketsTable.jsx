@@ -1,4 +1,6 @@
-import * as React from "react";
+
+import { Link } from 'react-router-dom'
+import * as React from 'react'
 import Avatar from "@mui/joy/Avatar";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -6,7 +8,6 @@ import Chip from "@mui/joy/Chip";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
@@ -36,7 +37,7 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
-import Cookies from 'js-cookie';
+
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
@@ -44,7 +45,9 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
+
 const tickets = [
   {
     id: "1",
@@ -55,7 +58,7 @@ const tickets = [
     Row: "A",
     Section: "Front",
     buyer_id: "201",
-    document: "ticket1.pdf",
+    document: "ticket_documents/ticket1.pdf",
     price: "50",
     date_added: "2024-01-01T08:00:00Z",
     seller: {
@@ -113,7 +116,7 @@ const tickets = [
   },
   {
     id: "4",
-    event_id: "104",
+    event_id: "101",
     quantity: "2",
     status: "Accepted",
     sold: "true",
@@ -136,7 +139,7 @@ const tickets = [
   },
   {
     id: "5",
-    event_id: "105",
+    event_id: "103",
     quantity: "4",
     status: "Accepted",
     sold: "true",
@@ -159,7 +162,7 @@ const tickets = [
   },
   {
     id: "6",
-    event_id: "106",
+    event_id: "103",
     quantity: "1",
     status: "Refused",
     sold: "false",
@@ -178,7 +181,7 @@ const tickets = [
   },
   {
     id: "7",
-    event_id: "107",
+    event_id: "102",
     quantity: "3",
     status: "Accepted",
     sold: "false",
@@ -197,7 +200,7 @@ const tickets = [
   },
   {
     id: "8",
-    event_id: "108",
+    event_id: "101",
     quantity: "2",
     status: "Accepted",
     sold: "true",
@@ -220,7 +223,7 @@ const tickets = [
   },
   {
     id: "9",
-    event_id: "109",
+    event_id: "101",
     quantity: "1",
     status: "Accepted",
     sold: "false",
@@ -239,6 +242,39 @@ const tickets = [
   },
 ]
 
+const events = [
+  {   id:"101",
+      title: 'Music Festival',
+      datetime: '2024-05-20 18:00:00',
+      deadline: '2024-05-18 12:00:00',
+      description: 'A two-day music festival featuring various artists.',
+      place: 'Stadium',
+      cover_picture: 'event_covers/music_festival.jpg',
+      stadium_id: 3,
+      theater_id: null,
+  },
+  {   id :"102",
+      title: 'Dance Competition',
+      datetime: '2024-07-12 14:00:00',
+      deadline: '2024-07-10 12:00:00',
+      description: 'An annual dance competition showcasing talent from around the world.',
+      place: 'Theater',
+      cover_picture: 'event_covers/dance_competition.jpg',
+      stadium_id: null,
+      theater_id: 4,
+  },
+  {   
+      id :"103",
+      title: 'Stand-up Comedy Show',
+      datetime: '2024-09-05 20:00:00',
+      deadline: '2024-09-03 12:00:00',
+      description: 'An evening filled with laughter featuring top comedians.',
+      place: 'Theater',
+      cover_picture: 'event_covers/comedy_show.jpg',
+      stadium_id: null,
+      theater_id: 5,
+  },
+]
 
 
 function RowMenu() {
@@ -274,32 +310,41 @@ function stableSort(array, comparator) {
   })
   return stabilizedThis.map(el => el[0])
 }
+function getEventName(eventId) {
+  const event = events.find(event => event.id === eventId);
+  console.log(event)
+  if (event) {
+    return event.title; 
+  } else {
+    return "Event Not Found";
+  }
+}
 
-
-export default function AllTikets() {
+export default function ProgressTicketsTable() {
   const [order, setOrder] = React.useState("desc")
   const [selected, setSelected] = React.useState([])
   const [open, setOpen] = React.useState(false)
   const { t } = useTranslation();
   const storedLanguage = Cookies.get('i18next_lng');
+  
+  
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
-        <FormLabel>{t("status")}</FormLabel>
+        <FormLabel>{t("event")}</FormLabel>
         <Select
           size="sm"
-          placeholder={t('filter_by_status')}
+          placeholder={t("filter_by_events")}
           slotProps={{ button: { sx: { whiteSpace: "nowrap" } } }}
           onChange={handleSelectChange}
         >
-          <Option value="">{t("all")}</Option>
-          <Option value="Accepted">{t("accepted")}</Option>
-          <Option value="Refused">{t("refused")}</Option>
-          <Option value="Progress">{t("progress")}</Option>
+         <Option  value=''>{t("all")}</Option>
+         {events.map(({title,id},index) => (
+           <Option key={index} value={id}>{title}</Option>
+                ))}
         </Select>
       </FormControl>
       
-
     </React.Fragment>
   )
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -309,7 +354,6 @@ const handleSearchInputChange = (event) => {
    
 };
 const [filterSearchtickets,setFilterSearchCourse] = React.useState([]);
-// console.log(filterSearchtickets);
 React.useEffect(()=>{
 if(searchQuery ==''){
 setFilterSearchCourse(tickets);
@@ -321,7 +365,7 @@ ticket.date_added.toLowerCase().includes(searchQuery.toLowerCase())||
 ticket.seller.name.toLowerCase().includes(searchQuery.toLowerCase())||
 ticket.seller.email.toLowerCase().includes(searchQuery.toLowerCase())
 ||
-ticket.status.toLowerCase().includes(searchQuery.toLowerCase())
+ticket.event_id.toLowerCase().includes(searchQuery.toLowerCase())
 
 );
 setFilterSearchCourse(filteredtickets)
@@ -333,64 +377,22 @@ const [selectedOption, setSelectedOption] = React.useState('');
   const handleSelectChange = (event ,newValue) => {
     setSelectedOption(newValue)
     }
-const [filterStatusTickets,setFilterStatusTickets] = React.useState([]);
-// console.log(filterStatusTickets);
+const [filterEventTickets,setfilterEventTickets] = React.useState([]);
+// console.log(filterEventTickets);
 React.useEffect(() => {
   if (selectedOption === '') {
-    setFilterStatusTickets(filterSearchtickets);
+    setfilterEventTickets(filterSearchtickets);
   } else {
 
-    const filter = filterSearchtickets.filter(ticket => ticket.status === selectedOption);
-      setFilterStatusTickets(filter);
+    const filter = filterSearchtickets.filter(ticket => ticket.event_id === selectedOption);
+      setfilterEventTickets(filter);
 
     }
 }, [selectedOption,filterSearchtickets]);
-// console.log(filterStatusTickets);
 
-const handleDownloadPDF = () => {
-  const doc = new jsPDF();
-  let yPos = 10;
-
-  const columnWidths = [40, 60, 40, 70]; 
-
-  doc.setFontSize(12);
-  doc.setTextColor(255, 255, 255); 
-  doc.setFillColor(151, 195, 240); 
-  doc.rect(10, yPos, columnWidths.reduce((acc, width) => acc + width, 0), 10, 'F'); 
-  doc.text('Invoice', 15, yPos + 8);
-  doc.text('Date',  55, yPos + 8);
-  doc.text('Status', 105, yPos + 8);
-  doc.text('Seller', 130, yPos + 8);
-  yPos += 10;
-
-  filterStatusTickets.forEach((ticket, index) => {
-    if (index % 2 === 0) {
-      doc.setFillColor(240, 240, 240); 
-    } else {
-      doc.setFillColor(255, 255, 255); 
-    }
-    doc.rect(10, yPos, columnWidths.reduce((acc, width) => acc + width, 0), 10, 'F'); 
-    doc.setTextColor(0, 0, 0); 
-    doc.text(`INV-${ticket.id}`, 15, yPos + 8);
-    doc.text(ticket.date_added, 55, yPos + 8);
-    doc.text(ticket.status, 105, yPos + 8);
-    doc.text(`${ticket.seller.name} (${ticket.seller.email})`, 130, yPos + 8);
-    yPos += 10;
-  });
-
-  doc.save('table_data.pdf');
-};
-const handleDownload = (documentUrl) => {
-  const fullUrl = `${window.location.origin}/${documentUrl}`;
-console.log(documentUrl);
-  const a = document.createElement('a');
-  a.href = fullUrl;
-  a.download = documentUrl.split('/').pop(); 
-  a.click();
-};
   return (
     <>
-          <Breadcrumbs
+     <Breadcrumbs
             size="sm"
             aria-label="breadcrumbs"
             separator={<ChevronRightRoundedIcon fontSize="sm" />}
@@ -405,7 +407,7 @@ console.log(documentUrl);
               <HomeRoundedIcon />
             </Link>
             <Typography color="primary" fontWeight={500} fontSize={12}>
-             {t("all_tickets")}
+            {t("in_progress_ticketes")}
             </Typography>
           </Breadcrumbs>
           <Box
@@ -421,18 +423,9 @@ console.log(documentUrl);
             }}
           >
             <Typography level="h2" component="h1">
-              {t("all_tickets")}
+             {t("in_progress_ticketes")}
             </Typography>
-            <Button
-              color="primary"
-  
-              startDecorator={storedLanguage === 'en'? <DownloadRoundedIcon /> : null}
-              endDecorator={storedLanguage === 'ar' ? <DownloadRoundedIcon /> : null}
-              size="sm"
-              onClick={handleDownloadPDF}
-            >
-              {t("download")} PDF
-            </Button>
+            
           </Box>
           <React.Fragment >
            <Sheet
@@ -469,7 +462,7 @@ console.log(documentUrl);
             <Sheet sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {renderFilters()}
               <Button color="primary" onClick={() => setOpen(false)}>
-                {t("submit")}
+              {t("submit")}
               </Button>
             </Sheet>
           </ModalDialog>
@@ -550,7 +543,7 @@ console.log(documentUrl);
                   sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
-              <th style={{ width: 120, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>
+              <th style={{ width: 120, padding: "12px 6px",textAlign:[storedLanguage==="ar" ? "start":"end"] }}>
                 <Link
                   underline="none"
                   color="primary"
@@ -570,13 +563,13 @@ console.log(documentUrl);
                 </Link>
               </th>
               <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("date")}</th>
-              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("status")}</th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("event")}</th>
               <th style={{ width: 240, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t('seller')}</th>
               <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}> </th>
             </tr>
           </thead>
           <tbody>
-            {stableSort(filterStatusTickets, getComparator(order, "id")).map(ticket => (
+            {stableSort(filterEventTickets, getComparator(order, "id")).map(ticket => (
               <tr key={ticket.id}>
                 <td style={{ textAlign: "center", width: 120 }}>
                   <Checkbox
@@ -601,26 +594,7 @@ console.log(documentUrl);
                   <Typography level="body-xs">{ticket.date_added}</Typography>
                 </td>
                 <td>
-                  <Chip
-                    variant="soft"
-                    size="sm"
-                    startDecorator={
-                      {
-                        Accepted: <CheckRoundedIcon />,
-                        Progress: <AutorenewRoundedIcon />,
-                        Refused: <BlockIcon />
-                      }[ticket.status]
-                    }
-                    color={
-                      {
-                        Accepted: "success",
-                        Progress: "neutral",
-                        Refused: "danger"
-                      }[ticket.status]
-                    }
-                  >
-                    {ticket.status}
-                  </Chip>
+                {getEventName(ticket.event_id)}
                 </td>
                 <td>
                   <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
@@ -637,9 +611,9 @@ console.log(documentUrl);
                 </td>
                 <td>
                   <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                    <Link level="body-xs" component="button" onClick={() => handleDownload(ticket.document)}>
-                      {t("download")}
-                    </Link>
+                  {/* <a href=>View Details</a> */}
+                  <Link to={`${ticket.id}`}>{t("view_details")}</Link>
+
                     <RowMenu />
                   </Box>
                 </td>
@@ -648,43 +622,9 @@ console.log(documentUrl);
           </tbody>
         </Table>
       </Sheet>
-      <Box
-        className="Pagination-laptopUp"
-        sx={{
-          pt: 2,
-          gap: 1,
-          [`& .${iconButtonClasses.root}`]: { borderRadius: "50%" },
-          display: {
-            xs: "none",
-            md: "flex"
-          }
-        }}
-      >
-     
-    
-      </Box>
-      
          </React.Fragment>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-      {filterStatusTickets.map((ticket) => (
+      {filterEventTickets.map((ticket) => (
         <List
           key={ticket.id}
           size="sm"
@@ -721,66 +661,23 @@ console.log(documentUrl);
                 >
                   <Typography level="body-xs">{ticket.date}</Typography>
                   <Typography level="body-xs">&bull;</Typography>
-                  <Typography level="body-xs">{ticket.id}</Typography>
+                  <Typography level="body-xs">INV-{ticket.id}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  <Link level="body-sm" component="button">
-                    Download
-                  </Link>
+                  
+                  <Link to={`${ticket.id}`}>{t("view_details")}</Link>
                   <RowMenu />
                 </Box>
               </div>
             </ListItemContent>
-            <Chip
-              variant="soft"
-              size="sm"
-              startDecorator={
-                {
-                  Accepted: <CheckRoundedIcon />,
-                  Progress: <AutorenewRoundedIcon />,
-                  Refused: <BlockIcon />
-                }[ticket.status]
-              }
-              color={
-                {
-                  Accepted: "success",
-                  Progress: "neutral",
-                  Refused: "danger"
-                }[ticket.status]
-              }
-            >
-              {ticket.status}
-            </Chip>
+            {getEventName(ticket.event_id)}
           </ListItem>
           <ListDivider />
         </List>
       ))}
-      <Box
-        className="Pagination-mobile"
-        sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', py: 2 }}
-      >
-          <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-          >
-           <KeyboardArrowLeftIcon />
-          </IconButton>
-          <Typography level="body-sm" mx="auto">
-          Page 1 of 10
-          </Typography>
-          <IconButton
-          aria-label="next page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <KeyboardArrowRightIcon />
-          </IconButton>
         </Box>
-        </Box>
-        
-     </>
+
+       
+    </>
   )
 }

@@ -1,7 +1,11 @@
-import React from 'react'
+import * as React from "react";
+
+import { Outlet } from "react-router";
 
 export default function DoneTickets() {
   return (
-    <div>DoneTickets</div>
+    <>
+      <Outlet />
+    </>
   )
 }

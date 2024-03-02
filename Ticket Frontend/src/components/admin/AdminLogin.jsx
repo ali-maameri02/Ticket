@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Logo from '../Logo';
-import axios from 'axios';  // Import Axios library for making HTTP requests
+import axios from 'axios';  
 import { redirect } from 'react-router-dom';
 function Copyright(props) {
     return (
@@ -34,30 +34,25 @@ export default function AdminLogin(props) {
       const password = formData.get('password');
 
       try {
-          const response = await axios.post('http://127.0.0.1:8000/api/admin/Login/', {  // Adjust the URL as per your Django URL configuration
+          const response = await axios.post('http://127.0.0.1:8000/api/admin/Login/', {
               username: email,
               password: password
               
           });
-          console.log(response.data);  // Log the response for debugging
+          console.log(response.data); 
           const token = response.data.token;
           localStorage.setItem('authToken', token);
           props.onLogin();
           
       } catch (error) {
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.error('Login failed:', error.response.data);
         } else if (error.request) {
-          // The request was made but no response was received
           console.error('No response received from the server');
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error during request setup:', error.message);
         }
     
-        // Handle login failure, e.g., display error message to the user
       }
   };
     

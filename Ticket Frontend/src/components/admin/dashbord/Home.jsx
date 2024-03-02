@@ -24,6 +24,7 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
@@ -37,9 +38,12 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Avatar from '@mui/joy/Avatar';
 import ReactApexChart from 'react-apexcharts';
 import TimeAgo from '../utils/TimeAgo'
+import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
 
 
 export default function Home() {
+  const { t } = useTranslation();
   const categories = [
     "2024-01-01T00:00:00.000Z",
     "2024-02-01T00:00:00.000Z",
@@ -78,15 +82,16 @@ export default function Home() {
 
   const [apexSeries, setApexSeries] = React.useState([
     {
-      name: 'Sales',
+      name: t('sales'),
       data: [150, 200, 120, 180, 160, 220, 200 ,234 ,243,223,342,754,353]
     },
     {
-      name: 'Users',
+      name:t('users'),
       data: [80, 150, 200, 150, 120, 180, 140, 200, 150, 120,342,543,353]
     }
   ]);
    
+  const storedLanguage = Cookies.get('i18next_lng');
   
     const chartData = {
       series: [20,40,40],
@@ -95,7 +100,7 @@ export default function Home() {
           width: '100%',
           type: 'pie',
         },
-        labels: ["Blocking", "In Progress", "Done"],
+        labels: [(t('blocking')), (t('in_progress')), (t('done'))],
         theme: {
           monochrome: {
             enabled: true
@@ -130,6 +135,7 @@ export default function Home() {
       }
       return color;
     };
+   
 
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
@@ -145,7 +151,13 @@ export default function Home() {
           <Breadcrumbs
             size="sm"
             aria-label="breadcrumbs"
-            separator={<ChevronRightRoundedIcon fontSize="sm" />}
+            separator={<>
+              {storedLanguage === 'ar' ? (
+                <ChevronLeftRoundedIcon fontSize="sm" />
+              ) : (
+                <ChevronRightRoundedIcon fontSize="sm" />
+              )}
+            </>}
             sx={{ pl: 0 }}
           >
             <Link
@@ -157,11 +169,11 @@ export default function Home() {
               <HomeRoundedIcon />
             </Link>
             <Typography color="primary" fontWeight={500} fontSize={12}>
-              Dashboard
+              {t('dashboard')}
             </Typography>
           </Breadcrumbs>
           <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-            Dashboard
+          {t('dashboard')}
           </Typography>
         </Box>
        
@@ -170,8 +182,9 @@ export default function Home() {
       
       <Grid container spacing={6} sx={{ px: { xs: 2, md: 6 }, py: { xs: 2, md: 3 } ,maxWidth: '100%', margin:"0 !important", 
 }}>
-      <Grid item xs={12} sm={12} md={6} lg={3} sx={{padding:"0 !important", }}>
-        <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}orientation="horizontal" variant="outlined">
+     
+     <Grid item xs={12} sm={12} md={6} lg={3} sx={{padding:"0 !important", }}>
+        <Card sx={{ [storedLanguage === 'ar' ? 'ml' : 'mr']:'1rem',marginBottom:'1rem',flexDirection:[storedLanguage === 'ar' ? ' row-reverse' : 'row']}}orientation="horizontal" variant="outlined">
         <CardOverflow>
         <AspectRatio ratio="1" sx={{ width: 90 }}>
           <img
@@ -186,13 +199,13 @@ export default function Home() {
         <Typography level="h4" component="h3" fontSize={16}>
           12.3M
         </Typography>
-        <Typography level="body-sm">Total Sales</Typography>
+        <Typography level="body-sm">{t('total')} {t('sales')}</Typography>
       </CardContent>
       
         </Card>
       </Grid>
       <Grid item xs={12} sm={12} md={6} lg={3} sx={{padding:"0 !important", }}>
-        <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}orientation="horizontal" variant="outlined">
+        <Card sx={{ [storedLanguage === 'ar' ? 'ml' : 'mr']:'1rem',marginBottom:'1rem',flexDirection:[storedLanguage === 'ar' ? ' row-reverse' : 'row']}}orientation="horizontal" variant="outlined">
         <CardOverflow>
         <AspectRatio ratio="1" sx={{ width: 90 }}>
           <img
@@ -207,13 +220,13 @@ export default function Home() {
         <Typography level="h4" component="h3" fontSize={16}>
           12.3M
         </Typography>
-        <Typography level="body-sm">Total Order</Typography>
+        <Typography level="body-sm">{t('total')} {t('orders')}</Typography>
       </CardContent>
       
         </Card>
       </Grid>
       <Grid item xs={12} sm={12} md={6} lg={3} sx={{padding:"0 !important", }}>
-        <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}orientation="horizontal" variant="outlined">
+        <Card sx={{ [storedLanguage === 'ar' ? 'ml' : 'mr']:'1rem',marginBottom:'1rem',flexDirection:[storedLanguage === 'ar' ? ' row-reverse' : 'row']}}orientation="horizontal" variant="outlined">
         <CardOverflow>
         <AspectRatio ratio="1" sx={{ width: 90 }}>
           <img
@@ -228,13 +241,13 @@ export default function Home() {
         <Typography level="h4" component="h3" fontSize={16}>
           12.3M
         </Typography>
-        <Typography level="body-sm">Total Users</Typography>
+        <Typography level="body-sm">{t('total')} {t('users')}</Typography>
       </CardContent>
       
         </Card>
       </Grid>
       <Grid item xs={12} sm={12} md={6} lg={3} sx={{padding:"0 !important", }}>
-        <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}orientation="horizontal" variant="outlined">
+        <Card sx={{ [storedLanguage === 'ar' ? 'ml' : 'mr']:'1rem',marginBottom:'1rem' ,flexDirection:[storedLanguage === 'ar' ? ' row-reverse' : 'row']} }orientation="horizontal" variant="outlined">
         <CardOverflow>
         <AspectRatio ratio="1" sx={{ width: 90 }}>
           <img
@@ -249,16 +262,17 @@ export default function Home() {
         <Typography level="h4" component="h3" fontSize={16}>
           12.3M
         </Typography>
-        <Typography level="body-sm">Total Tickets</Typography>
+        <Typography level="body-sm">{t('total')} {t('tickets')}</Typography>
       </CardContent>
       
         </Card>
       </Grid>
+     
       <Grid xs={12} md={6} lg={8}>
       <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}>
       <CardContent>
         <Typography level="h3" component="h2" fontSize={20}>
-          Website Users
+          {t('website_users')}
         </Typography>
       </CardContent>
       <ReactApexChart options={apexOptions} series={apexSeries} type="area" height={300} />
@@ -268,7 +282,7 @@ export default function Home() {
         <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}>
         <CardContent>
         <Typography level="h3" component="h2" fontSize={20}>
-          Tickets Status
+          {t('tickets_status')}
         </Typography>
       </CardContent>
         <ReactApexChart options={chartData.options} series={chartData.series} type="pie"   />
@@ -278,7 +292,7 @@ export default function Home() {
          <Card sx={{marginRight:'1rem',marginBottom:'1rem'}}>
          <CardContent>
           <Typography level="h3" component="h2" fontSize={20}>
-           News Tickets
+           {t('new_tickets')}
            </Typography>
           
            </CardContent>
@@ -336,7 +350,7 @@ export default function Home() {
         </ListItem>
       </List>
       <Typography level="body-xs" 
-       fontSize={12} textAlign="right" 
+       fontSize={12} textAlign={'end'}
       component={Link}
        href="all-tickets/"
        sx={{
@@ -345,7 +359,7 @@ export default function Home() {
         },
       }}
                   >
-           View All
+           {t('view_all')}
       </Typography>
         </Card>
       </Grid>

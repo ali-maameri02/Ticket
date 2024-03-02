@@ -3,6 +3,7 @@ import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
+import { useTranslation } from 'react-i18next';
 import Card from '@mui/joy/Card';
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
@@ -43,6 +44,8 @@ import Menu from '@mui/joy/Menu';
 import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import MoreVert from '@mui/icons-material/MoreVert';
+import LanguageSwitcher from '../../../LanguageSwitcher';
+import Cookies from 'js-cookie';
 
 function Toggler({
   defaultExpanded = false,
@@ -71,19 +74,24 @@ function Toggler({
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const storedLanguage = Cookies.get('i18next_lng');
+  const { t } = useTranslation();
   const authToken = localStorage.getItem('authToken');
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('sessionExpiration');
     navigate('/admin');
   };
+  const translationDirection = storedLanguage === 'ar' ? '-100%' : '100%';
+
   return (
     <Sheet
       className="Sidebar"
       sx={{
         position: { xs: 'fixed', md: 'sticky' },
+        // right:[storedLanguage === 'ar' ? '-var(--Sidebar-width)' : 'ml'],
         transform: {
-          xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1)))',
+          xs: `translateX(calc(${translationDirection} * (var(--SideNavigation-slideIn, 0) - 1)))`,
           md: 'none',
         },
         transition: 'transform 0.4s, width 0.4s',
@@ -123,56 +131,21 @@ export default function Sidebar() {
           backgroundColor: 'var(--joy-palette-background-backdrop)',
           transition: 'opacity 0.4s',
           transform: {
-            xs: 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
-            lg: 'translateX(-100%)',
+            xs: storedLanguage === 'ar' 
+                ? 'translateX(calc(-100% * (var(--SideNavigation-slideIn, 0) - 1) - var(--SideNavigation-slideIn, 0) * 100%))'
+                : 'translateX(calc(100% * (var(--SideNavigation-slideIn, 0) - 1) + var(--SideNavigation-slideIn, 0) * var(--Sidebar-width, 0px)))',
+            lg: storedLanguage === 'ar' ? 'translateX(100%)' : 'translateX(100%)',
           },
+          
         }}
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-       
         <Typography level="title-lg">Acme Co.</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-        <Dropdown>
-        <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'outlined' } }}
-        sx={{minWidth:'2rem',minHeight:"2rem"}}
-      >
-        <ReactCountryFlag
-                countryCode="US"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-        </MenuButton>
-        <Menu sx={{ zIndex: 10001, backgroundColor: 'var(--joy-palette-background-surface)',}} >
-        <MenuItem >
-          <ReactCountryFlag
-                countryCode="US"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-               English
-        </MenuItem>
-        <MenuItem>
-        <ReactCountryFlag
-                countryCode="SA"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-               Arabic
-        </MenuItem>
-        </Menu>
-        </Dropdown>
-        
+        <ColorSchemeToggle sx={{ [storedLanguage === 'ar' ? 'mr' : 'ml']: 'auto' }}  />
+        <LanguageSwitcher />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder={t('search')} />
       <Box
         sx={{
           minHeight: 0,
@@ -193,17 +166,15 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-         
           <ListItem>
             <ListItemButton
              role="menuitem"
              component={Link}
-             to="/admin/dashboard/"
+             to=""
              selected={location.pathname === '/admin/dashboard/'}>
-             
               <DashboardRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
+                <Typography level="title-sm">{t('dashboard')}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -212,12 +183,12 @@ export default function Sidebar() {
             <ListItemButton
               role="menuitem"
               component={Link}
-              to="payments/"
+              to="payments"
               selected={location.pathname === '/admin/dashboard/payments/'}
             >
               <PaymentIcon />
               <ListItemContent>
-                <Typography level="title-sm">Payments</Typography>
+                <Typography level="title-sm">{t('payments')}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -227,7 +198,7 @@ export default function Sidebar() {
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <ConfirmationNumberIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tickets</Typography>
+                    <Typography level="title-sm">{t('tickets')}</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -240,9 +211,9 @@ export default function Sidebar() {
                   <ListItemButton 
                   role="menuitem"
                   component={Link}
-                  to="all-tickets/"
+                  to="all-tickets"
                   selected={location.pathname === '/admin/dashboard/all-tickets/'}
-                  >All tickets</ListItemButton>
+                  >{t('all_tickets')}</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
@@ -250,22 +221,22 @@ export default function Sidebar() {
                   component={Link}
                   to="blocking-tickets/"
                   selected={location.pathname === '/admin/dashboard/blocking-tickets/'}
-                  >Blocking</ListItemButton>
+                  >{t('blocking')}</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
                   role="menuitem"
                   component={Link}
-                  to="progress-tickets/"
+                  to="progress-tickets"
                   selected={location.pathname === '/admin/dashboard/progress-tickets/'}
-                  >In progress</ListItemButton>
+                  >{t('in_progress')}</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
                   role="menuitem"
                   component={Link}
-                  to="done-tickets/"
-                  selected={location.pathname === '/admin/dashboard/done-tickets/'}>Done</ListItemButton>
+                  to="done-tickets"
+                  selected={location.pathname === '/admin/dashboard/done-tickets/'}>{t('done')}</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -279,7 +250,7 @@ export default function Sidebar() {
             >
               <EventIcon />
               <ListItemContent>
-                <Typography level="title-sm">Events</Typography>
+                <Typography level="title-sm">{t('events')}</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -290,7 +261,7 @@ export default function Sidebar() {
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <GroupRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
+                    <Typography level="title-sm">{t('users')}</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -305,7 +276,7 @@ export default function Sidebar() {
                   component={Link}
                   to="my-profile/"
                   selected={location.pathname === '/admin/dashboard/my-profile/'}
-                  >My profile</ListItemButton>
+                  >{t('my_profile')}</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
@@ -313,7 +284,7 @@ export default function Sidebar() {
                   component={Link}
                   to="users"
                   selected={location.pathname === '/admin/dashboard/users/'}
-                  >Users</ListItemButton>
+                  >{t('users')}</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -325,7 +296,7 @@ export default function Sidebar() {
             to="settings"
             selected={location.pathname === '/admin/dashboard/settings/'}>
               <SettingsRoundedIcon />
-              Settings
+              {t('settings')}
             </ListItemButton>
           </ListItem>
         </List>
@@ -345,7 +316,6 @@ export default function Sidebar() {
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
-    
     </Sheet>
   );
 }
