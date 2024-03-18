@@ -45,7 +45,6 @@ import ListItemContent from '@mui/joy/ListItemContent';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListDivider from '@mui/joy/ListDivider';
 import DeleteIcon from '@mui/icons-material/Delete';
-<<<<<<< HEAD
 import { useTranslation } from 'react-i18next';
 const tickets = [
   {
@@ -240,10 +239,6 @@ const tickets = [
     buyer: null
   },
 ]
-=======
-
-
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
 
 
 
@@ -286,16 +281,13 @@ export default function AllTikets() {
   const [order, setOrder] = React.useState("desc")
   const [selected, setSelected] = React.useState([])
   const [open, setOpen] = React.useState(false)
-<<<<<<< HEAD
   const { t } = useTranslation();
   const storedLanguage = Cookies.get('i18next_lng');
-=======
   
   const [tickets, setTickets] = useState([]);
   const apiUrl = "http://funpass.io";
   useEffect(() => {
-      // Fetch ticket data from the backend
-      axios.get('http://funpass.io/api/admin/Tickets/')
+      axios.get('http://127.0.0.1:8000/api/admin/Tickets/')
           .then(response => {
               setTickets(response.data);
               console.log(response.data)
@@ -307,7 +299,6 @@ export default function AllTikets() {
   }, []); 
   
   
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -445,11 +436,7 @@ console.log(documentUrl);
             }}
           >
             <Typography level="h2" component="h1">
-<<<<<<< HEAD
               {t("all_tickets")}
-=======
-              Tickets
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
             </Typography>
             <Button
               color="primary"
@@ -517,11 +504,7 @@ console.log(documentUrl);
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-<<<<<<< HEAD
           <FormLabel>{t("search_for_order")}</FormLabel>
-=======
-          <FormLabel>Search for Ticket</FormLabel>
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
           <Input
             size="sm"
             placeholder={t('search')}
@@ -582,7 +565,7 @@ console.log(documentUrl);
                   sx={{ verticalAlign: "text-bottom" }}
                 />
               </th>
-              <th style={{ width: 120, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>
+              <th style={{ width: 120, padding: "12px 6px" ,textAlign: "start"}}>
                 <Link
                   underline="none"
                   color="primary"
@@ -601,10 +584,10 @@ console.log(documentUrl);
                   {t('ticket')}
                 </Link>
               </th>
-              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("date")}</th>
-              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t("status")}</th>
-              <th style={{ width: 240, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}>{t('seller')}</th>
-              <th style={{ width: 140, padding: "12px 6px" ,textAlign:[storedLanguage==="ar" ? "start":"end"]}}> </th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:"start"}}>{t("date")}</th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:"start"}}>{t("status")}</th>
+              <th style={{ width: 240, padding: "12px 6px" ,textAlign:"start"}}>{t('seller')}</th>
+              <th style={{ width: 140, padding: "12px 6px" ,textAlign:"start"}}> </th>
             </tr>
           </thead>
           <tbody>

@@ -156,7 +156,10 @@
     "enter_cardholders_full_name": "أدخل اسم صاحب البطاقة بالكامل",
     "save_card": "حفظ البطاقة",
     "no_active_listings": "لا يوجد قوائم نشطة",
-    "add_tickets_and_create_a_listing_to_get_started": "أضف تذاكر وأنشئ قائمة للبدء."
+    "add_tickets_and_create_a_listing_to_get_started": "أضف تذاكر وأنشئ قائمة للبدء.",
+    "order_number": "رقم الطلب",
+    "sold": "التذاكر المباعة"
+
 
 
 

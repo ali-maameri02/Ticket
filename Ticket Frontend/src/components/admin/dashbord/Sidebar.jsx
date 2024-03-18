@@ -141,55 +141,9 @@ export default function Sidebar() {
         onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-<<<<<<< HEAD
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-lg">Funpass.</Typography>
         <ColorSchemeToggle sx={{ [storedLanguage === 'ar' ? 'mr' : 'ml']: 'auto' }}  />
         <LanguageSwitcher />
-=======
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">Funpass.</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-        <Dropdown>
-        <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'outlined' } }}
-        sx={{minWidth:'2rem',minHeight:"2rem"}}
-      >
-        <ReactCountryFlag
-                countryCode="US"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-        </MenuButton>
-        <Menu sx={{ zIndex: 10001, backgroundColor: 'var(--joy-palette-background-surface)',}} >
-        <MenuItem >
-          <ReactCountryFlag
-                countryCode="US"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-               English
-        </MenuItem>
-        <MenuItem>
-        <ReactCountryFlag
-                countryCode="SA"
-                svg
-                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                cdnSuffix="svg"
-                title="US" 
-               />
-               Arabic
-        </MenuItem>
-        </Menu>
-        </Dropdown>
-        
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
       </Box>
       <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder={t('search')} />
       <Box

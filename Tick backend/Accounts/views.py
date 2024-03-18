@@ -3,11 +3,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token  # Update this import
 from django.contrib.auth import get_user_model
-<<<<<<< HEAD
 from .serializers import UserSerializer, LoginSerializer , UserDataSerializer
-=======
 from .serializers import *
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
@@ -103,9 +100,7 @@ class GetUserData(APIView):
         )
 
 
-<<<<<<< HEAD
   
-=======
 
 class Creditcardview(generics.ListCreateAPIView):
     serializer_class = Creditcardserializer
@@ -324,4 +319,3 @@ def send_email_confirmation(sender_name, sender_email):
     except Exception as e:
         logger.error(f"Failed to send email confirmation to {sender_email}: {str(e)}")
         return HttpResponse(f"Failed to send email confirmation: {str(e)}", status=500)
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
