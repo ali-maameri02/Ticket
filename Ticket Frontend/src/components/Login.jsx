@@ -40,13 +40,8 @@ export default function Login(props) {
 
   const handleLoginSubmit = async () => {
     try {
-<<<<<<< HEAD
-      console.log(loginData);
-      const response = await axios.post('http://127.0.0.1:8000/api/users/login/', loginData);
-=======
       const response = await axios.post('http://funpass.io/api/users/login/', loginData);
       // Handle the response as needed
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
       console.log('Login Response:', response.data);
       setLoginError('');
       setOpenLogin(false);

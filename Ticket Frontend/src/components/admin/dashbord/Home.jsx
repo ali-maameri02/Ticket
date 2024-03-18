@@ -38,35 +38,13 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Avatar from '@mui/joy/Avatar';
 import ReactApexChart from 'react-apexcharts';
 import TimeAgo from '../utils/TimeAgo'
-<<<<<<< HEAD
-import { useTranslation } from 'react-i18next';
-import Cookies from 'js-cookie';
-
-
-export default function Home() {
-  const { t } = useTranslation();
-  const categories = [
-    "2024-01-01T00:00:00.000Z",
-    "2024-02-01T00:00:00.000Z",
-    "2024-03-01T00:00:00.000Z",
-    "2024-04-01T00:00:00.000Z",
-    "2024-05-01T00:00:00.000Z",
-    "2024-06-01T00:00:00.000Z",
-    "2024-07-01T00:00:00.000Z",
-    "2024-08-01T00:00:00.000Z",
-    "2024-09-01T00:00:00.000Z",
-    "2024-10-01T00:00:00.000Z",
-    "2024-11-01T00:00:00.000Z",
-    "2024-12-01T00:00:00.000Z",
-  ];
-  const [apexOptions, setApexOptions] = React.useState({
-=======
 import { useState,useEffect } from 'react';
 import axios from 'axios';
-
+import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie'
 export default function Home() {
   const [statistics, setStatistics] = useState(null);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -81,7 +59,6 @@ export default function Home() {
     fetchStatistics();
   }, []);
   const [apexOptions, setApexOptions] = useState({
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
     chart: {
       height: 350,
       type: 'area'
@@ -99,68 +76,6 @@ export default function Home() {
     tooltip: {
       x: {
         format: 'dd/MM/yy HH:mm'
-<<<<<<< HEAD
-      },
-    },
-  });
-
-  const [apexSeries, setApexSeries] = React.useState([
-    {
-      name: t('sales'),
-      data: [150, 200, 120, 180, 160, 220, 200 ,234 ,243,223,342,754,353]
-    },
-    {
-      name:t('users'),
-      data: [80, 150, 200, 150, 120, 180, 140, 200, 150, 120,342,543,353]
-    }
-  ]);
-   
-  const storedLanguage = Cookies.get('i18next_lng');
-  
-    const chartData = {
-      series: [20,40,40],
-      options: {
-        chart: {
-          width: '100%',
-          type: 'pie',
-        },
-        labels: [(t('blocking')), (t('in_progress')), (t('done'))],
-        theme: {
-          monochrome: {
-            enabled: true
-          }
-        },
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              offset: -5
-            }
-          }
-        },
-        
-        dataLabels: {
-          formatter(val, opts) {
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            return [name, val.toFixed(1) + '%']
-          }
-        },
-        legend: {
-          show: false
-        }
-      },
-    
-    
-    };
-    const getRandomColor = () => {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    };
-   
-=======
       }
     }
   });
@@ -169,7 +84,8 @@ export default function Home() {
     { name: 'Sales', data: [] },
     { name: 'Users', data: [] }
   ]);
-  
+  const storedLanguage = Cookies.get('i18next_lng');
+
   useEffect(() => {
     fetchSalesAndUsersData();
   }, []);
@@ -258,7 +174,6 @@ export default function Home() {
         fetchTicketStatistics();
     }, []);
 
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
 
   return (
     <Box sx={{ flex: 1, width: '100%' }}>
@@ -341,15 +256,9 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-<<<<<<< HEAD
-          12.3M
-        </Typography>
-        <Typography level="body-sm">{t('total')} {t('orders')}</Typography>
-=======
         {statistics ? statistics.total_orders : 'Loading...'}
                 </Typography>
-        <Typography level="body-sm">Total Order</Typography>
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
+                <Typography level="body-sm">{t('total')} {t('orders')}</Typography>
       </CardContent>
       
         </Card>
@@ -368,15 +277,9 @@ export default function Home() {
       </CardOverflow>
       <CardContent>
         <Typography level="h4" component="h3" fontSize={16}>
-<<<<<<< HEAD
-          12.3M
-        </Typography>
-        <Typography level="body-sm">{t('total')} {t('users')}</Typography>
-=======
         {statistics ? statistics.total_users : 'Loading...'}
                 </Typography>
-        <Typography level="body-sm">Total Users</Typography>
->>>>>>> ebe37f78e27f09ddfbec493f86b264658371d4e2
+                <Typography level="body-sm">{t('total')} {t('users')}</Typography>
       </CardContent>
       
         </Card>

@@ -49,7 +49,14 @@ const events = [
 export default function Landing() {
     let Background = "src/assets/tickets.jpg"
     const { t } = useTranslation();
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const storedLanguage = Cookies.get('i18next_lng');
+    React.useEffect(() => {
+        const authTokenUser = localStorage.getItem('authTokenUser');
+        if (authTokenUser) {
+          setIsAuthenticated(true); 
+        }
+      }, []);
   return (
     <>
         
@@ -110,7 +117,7 @@ export default function Landing() {
          <Typography level="h1" sx={{textAlign:'center' ,color:'#083052',mb:"1rem"}}>{t("music_sports_theater")}</Typography>
          <Typography level="body-lg" sx={{textAlign:'center' ,color:'dimgray' ,mb:"1rem"}}>{t("the_best_tickets")}</Typography>
          <Box sx={{textAlign:"center"}}>
-          <Login justlogin="true" />
+         {!isAuthenticated &&(<Login justlogin="true" />)}
          </Box>
          </Container>
          </Box>
